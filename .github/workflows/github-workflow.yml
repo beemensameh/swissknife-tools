@@ -1,0 +1,64 @@
+name: build_binaries
+
+on:
+    push:
+        tags:
+            - "v*.*.*"
+
+jobs:
+    linux:
+        name: build linux binary
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@v2
+            - name: build
+              run: make tidy && make build-linux
+            - name: release
+              uses: softprops/action-gh-release@v1
+              with:
+                files: ./bin/swisstool
+              env:
+                  GITHUB_TOKEN: ${{ secrets.TOKEN }}
+    win32:
+        name: build win32 binary
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@v2
+            - name: build
+              run: make tidy && make build-win32
+            - name: release
+              uses: softprops/action-gh-release@v1
+              with:
+                files: ./bin/swisstool.exe
+              env:
+                  GITHUB_TOKEN: ${{ secrets.TOKEN }}
+    win64:
+        name: build win64 binary
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@v2
+            - name: build
+              run: make tidy && make build-win64
+            - name: release
+              uses: softprops/action-gh-release@v1
+              with:
+                files: ./bin/swisstool64.exe
+              env:
+                  GITHUB_TOKEN: ${{ secrets.TOKEN }}
+    macos:
+        name: build macos binary
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@v2
+            - name: build
+              run: make tidy && make build-mac
+            - name: release
+              uses: softprops/action-gh-release@v1
+              with:
+                files: ./bin/swisstool-mac
+              env:
+                  GITHUB_TOKEN: ${{ secrets.TOKEN }}
