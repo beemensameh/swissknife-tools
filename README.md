@@ -1,5 +1,8 @@
 
-# swissknife-tools Tool
+# Swissknife Tools
+
+[![build_binaries](https://github.com/beemensameh/swissknife-tools/actions/workflows/github-workflow.yml/badge.svg)](https://github.com/beemensameh/swissknife-tools/actions/workflows/github-workflow.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/beemensameh/swissknife-tools)](https://goreportcard.com/report/github.com/beemensameh/swissknife-tools)
 
 A quick and amazing tools for speed up your work
 
@@ -19,21 +22,6 @@ A quick and amazing tools for speed up your work
     $ make build
     $ ./bin/swisstool
     ```
-    - For Windows 32
-    ```sh
-    /> make build-win32
-    /> ./bin/swisstool.exe
-    ```
-    - For Windows 64
-    ```sh
-    /> make build-win64
-    /> ./bin/swisstool64.exe
-    ```
-    - For Mac OS
-    ```sh
-    /> make build-mac
-    /> ./bin/swisstool-mac
-    ```
 
 ### From release
 - Choose the latest release
@@ -50,7 +38,5 @@ A quick and amazing tools for speed up your work
 
 ## Usage/Examples
 
-[Time](./docs/time.md)
-
-### UUID
-_Coming soon_
+* [Time](./docs/time.md)
+* UUID "_Coming soon_"
