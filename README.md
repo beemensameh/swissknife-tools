@@ -39,4 +39,4 @@ A quick and amazing tools for speed up your work
 ## Usage/Examples
 
 * [Time](./docs/time.md)
-* UUID "_Coming soon_"
+* [UUID](./docs/uuid.md)
