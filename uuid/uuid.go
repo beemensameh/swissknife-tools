@@ -9,26 +9,11 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-type UUIDType string
-
-const (
-	DCEGroup    UUIDType = "group"
-	DCEPersion  UUIDType = "persion"
-	DCESecurity UUIDType = "security"
-)
-
-type UUIDDCESecurity string
-
-const (
-	Person UUIDDCESecurity = "persion"
-	Group  UUIDDCESecurity = "group"
-	Org    UUIDDCESecurity = "org"
-)
-
 var GenerateUUIDCmd = &cli.Command{
-	Name:   "uuid:generate",
-	Usage:  "Generate UUID for any UUID version",
-	Action: GenerateUUIDAction,
+	Name:    "uuid:generate",
+	Usage:   "Generate UUID for any UUID version",
+	Action:  GenerateUUIDAction,
+	Aliases: []string{"uuid:gen"},
 	Flags: []cli.Flag{
 		&cli.IntFlag{
 			Name:    "version",
@@ -38,13 +23,13 @@ var GenerateUUIDCmd = &cli.Command{
 		},
 		&cli.StringFlag{
 			Name:    "uuid-type",
-			Usage:   "It is DCE uuid types (should be one of [group, persion, security] and should add value when uuid version is 2)",
+			Usage:   "It is DCE uuid types (should be one of [group, person, security] and should add value when uuid version is 2)",
 			Value:   "group",
 			Aliases: []string{"uid-type"},
 		},
 		&cli.StringFlag{
 			Name:    "uuid-security-type",
-			Usage:   "It is DCE security uuid types (should be one of [group, persion, org] and should add value when uuid version is 2 and the uuid type is security)",
+			Usage:   "It is DCE security uuid types (should be one of [group, person, org] and should add value when uuid version is 2 and the uuid type is security)",
 			Value:   "group",
 			Aliases: []string{"uid-sec-type"},
 		},
@@ -60,28 +45,44 @@ var GenerateUUIDCmd = &cli.Command{
 			Aliases: []string{"num"},
 		},
 		&cli.StringFlag{
-			Name:    "seperated",
-			Usage:   "The seperated character that should seperat UUIDs",
+			Name:    "separated",
+			Usage:   "The separated character that should separate UUIDs",
 			Aliases: []string{"sep"},
 		},
 	},
 }
 
 func GenerateUUIDAction(cliContext *cli.Context) error {
+	return generateUUID(&UUIDCLI{
+		Version:          cliContext.Int("version"),
+		UUIDType:         UUIDTypeEnum(cliContext.String("uuid-type")),
+		UUIDSecurityType: UUIDDCESecurityEnum(cliContext.String("uuid-security-type")),
+		Name:             []byte(cliContext.String("name")),
+		Number:           cliContext.Int64("number"),
+		Separate:         cliContext.String("seperated"),
+	})
+}
+
+func generateUUID(uuidCLI *UUIDCLI) error {
 	var allUUIDs []string
 
-	for range make([]int, cliContext.Int64("number")) {
+	err := uuidCLI.validated()
+	if err != nil {
+		return err
+	}
+
+	for range make([]int, uuidCLI.Number) {
 		uuid, err := uuidVersion(
-			cliContext.Int64("version"),
-			UUIDType(cliContext.String("uuid-type")),
-			UUIDDCESecurity(cliContext.String("uuid-security-type")),
-			[]byte(cliContext.String("name")),
+			uuidCLI.Version,
+			uuidCLI.UUIDType,
+			uuidCLI.UUIDSecurityType,
+			uuidCLI.Name,
 		)
 		if err != nil {
 			return err
 		}
 
-		if cliContext.String("seperated") == "" {
+		if uuidCLI.Separate == "" {
 			fmt.Println(uuid)
 		} else {
 			allUUIDs = append(allUUIDs, uuid.String())
@@ -89,13 +90,13 @@ func GenerateUUIDAction(cliContext *cli.Context) error {
 	}
 
 	if len(allUUIDs) > 0 {
-		fmt.Println(strings.Join(allUUIDs, ","))
+		fmt.Println(strings.Join(allUUIDs, uuidCLI.Separate))
 	}
 
 	return nil
 }
 
-func uuidVersion(version int64, uuidType UUIDType, uuidDCESecurity UUIDDCESecurity, name []byte) (uuid.UUID, error) {
+func uuidVersion(version int, uuidType UUIDTypeEnum, uuidDCESecurity UUIDDCESecurityEnum, name []byte) (uuid.UUID, error) {
 	switch version {
 	case 1:
 		return uuid.NewUUID()
@@ -103,10 +104,12 @@ func uuidVersion(version int64, uuidType UUIDType, uuidDCESecurity UUIDDCESecuri
 		switch uuidType {
 		case DCEGroup:
 			return uuid.NewDCEGroup()
-		case DCEPersion:
+		case DCEPerson:
 			return uuid.NewDCEPerson()
-		default:
+		case DCESecurity:
 			return uuid.UUID{}, errors.New("DCESecurity doesn't support yet")
+		default:
+			return uuid.UUID{}, errors.New("UUID type doesn't exist")
 		}
 	case 3:
 		return uuid.NewMD5(uuid.New(), name), nil
@@ -115,6 +118,6 @@ func uuidVersion(version int64, uuidType UUIDType, uuidDCESecurity UUIDDCESecuri
 	case 5:
 		return uuid.NewSHA1(uuid.New(), name), nil
 	default:
-		return uuid.UUID{}, errors.New("Version doesn't found")
+		return uuid.UUID{}, errors.New("version doesn't exist")
 	}
 }

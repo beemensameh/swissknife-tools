@@ -5,6 +5,7 @@ import (
 	"os"
 
 	swisstime "github.com/beemensameh/swissknife-tools/time"
+	swissuuid "github.com/beemensameh/swissknife-tools/uuid"
 	cli "github.com/urfave/cli/v2"
 )
 
@@ -15,10 +16,11 @@ func main() {
 		Description: "A quick and amazing tools for speed up your work",
 		Commands: []*cli.Command{
 			swisstime.TimeNowCmd,
+			swissuuid.GenerateUUIDCmd,
 		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
-		log.Fatal("Error in app.Run: ", err)
+		log.Fatal("Error in app.Run:\n", err)
 	}
 }
