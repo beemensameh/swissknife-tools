@@ -1,18 +1,21 @@
 all:build
 
-build:build-linux build-win32 build-win64 build-mac
+build:build-linux32 build-linux64 build-win32 build-win64 build-mac
 
-build-linux:
-	go build -mod=vendor -o=./bin/swisstool -race ./cmd/swissknife-tools/.
+build-linux32:
+	GOOS=linux GOARCH=386 go build -mod=vendor -o=./bin/swisstool ./cmd/swissknife-tools/.
+
+build-linux64:
+	GOOS=linux GOARCH=amd64 go build -mod=vendor -o=./bin/swisstool-amd64 -race ./cmd/swissknife-tools/.
 
 build-win32:
-	GOOS=windows GOARCH=386 go build -mod=vendor -o=./bin/swisstool.exe ./cmd/swissknife-tools/.
+	GOOS=windows GOARCH=386 go build -mod=vendor -o=./bin/swisstool-i386.exe ./cmd/swissknife-tools/.
 
 build-win64:
-	GOOS=windows GOARCH=amd64 go build -mod=vendor -o=./bin/swisstool64.exe ./cmd/swissknife-tools/.
+	GOOS=windows GOARCH=amd64 go build -mod=vendor -o=./bin/swisstool-x64.exe ./cmd/swissknife-tools/.
 
 build-mac:
-	GOOS=darwin GOARCH=amd64 go build -mod=vendor -o=./bin/swisstool-mac ./cmd/swissknife-tools/.
+	GOOS=darwin GOARCH=amd64 go build -mod=vendor -o=./bin/swisstool-darwin-amd64 ./cmd/swissknife-tools/.
 
 tidy:
 	go mod vendor
