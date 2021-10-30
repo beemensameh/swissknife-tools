@@ -3,6 +3,7 @@
 
 [![build_binaries](https://github.com/beemensameh/swissknife-tools/actions/workflows/github-workflow.yml/badge.svg)](https://github.com/beemensameh/swissknife-tools/actions/workflows/github-workflow.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/beemensameh/swissknife-tools)](https://goreportcard.com/report/github.com/beemensameh/swissknife-tools)
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/organization/repository)
 
 A quick and amazing tools for speed up your work
 
@@ -39,4 +40,5 @@ A quick and amazing tools for speed up your work
 ## Usage/Examples
 
 * [Time](./docs/time.md)
+* [JSON](./docs/json.md)
 * [UUID](./docs/uuid.md)

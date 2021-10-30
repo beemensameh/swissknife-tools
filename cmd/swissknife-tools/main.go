@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	swissjson "github.com/beemensameh/swissknife-tools/json"
 	swisstime "github.com/beemensameh/swissknife-tools/time"
 	swissuuid "github.com/beemensameh/swissknife-tools/uuid"
 	cli "github.com/urfave/cli/v2"
@@ -15,6 +16,7 @@ func main() {
 		Usage:       "A CLI application for many tools",
 		Description: "A quick and amazing tools for speed up your work",
 		Commands: []*cli.Command{
+			swissjson.JsonMinifyCmd,
 			swisstime.TimeNowCmd,
 			swissuuid.GenerateUUIDCmd,
 		},
