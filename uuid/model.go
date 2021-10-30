@@ -25,7 +25,7 @@ const (
 )
 
 type UUIDCLI struct {
-	Version          int                 `validate:"required,gte=1,lte=5"`
+	Version          int                 `validate:"gte=0,lte=5"`
 	UUIDType         UUIDTypeEnum        `validate:"required_if=version 2,oneof=group person security"`
 	UUIDSecurityType UUIDDCESecurityEnum `validate:"required_if=uuidType security,oneof=group person org"`
 	Name             []byte              `validate:"omitempty"`

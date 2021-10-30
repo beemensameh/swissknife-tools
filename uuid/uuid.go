@@ -59,7 +59,7 @@ func GenerateUUIDAction(cliContext *cli.Context) error {
 		UUIDSecurityType: UUIDDCESecurityEnum(cliContext.String("uuid-security-type")),
 		Name:             []byte(cliContext.String("name")),
 		Number:           cliContext.Int64("number"),
-		Separate:         cliContext.String("seperated"),
+		Separate:         cliContext.String("separated"),
 	})
 }
 
@@ -98,6 +98,8 @@ func generateUUID(uuidCLI *UUIDCLI) error {
 
 func uuidVersion(version int, uuidType UUIDTypeEnum, uuidDCESecurity UUIDDCESecurityEnum, name []byte) (uuid.UUID, error) {
 	switch version {
+	case 0:
+		return uuid.Nil, nil
 	case 1:
 		return uuid.NewUUID()
 	case 2:
