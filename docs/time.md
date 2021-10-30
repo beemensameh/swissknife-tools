@@ -3,7 +3,7 @@
 You have some command that you can use them related to time
 * Now `time:now`
 
-## Time Now
+## `time:now`
 You have a many flags to run the command.
 - `--update` for make the time continuously update
 - `--interval` for how many seconds should update the display time (Work with `--update` tag and should be positive number)

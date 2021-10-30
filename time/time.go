@@ -9,9 +9,9 @@ import (
 )
 
 var TimeNowCmd = &cli.Command{
-	Name:    "Time now",
+	Name:    "time:now",
 	Usage:   "Get time now and update very i second and with f format",
-	Aliases: []string{"time:now", "time:n"},
+	Aliases: []string{"time:nw"},
 	Action:  timeNowAction,
 	Flags: []cli.Flag{
 		&cli.IntFlag{

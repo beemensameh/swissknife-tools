@@ -6,6 +6,7 @@ import (
 
 	swissjson "github.com/beemensameh/swissknife-tools/json"
 	swisstime "github.com/beemensameh/swissknife-tools/time"
+	swissuuid "github.com/beemensameh/swissknife-tools/uuid"
 	cli "github.com/urfave/cli/v2"
 )
 
@@ -17,10 +18,11 @@ func main() {
 		Commands: []*cli.Command{
 			swissjson.JsonMinifyCmd,
 			swisstime.TimeNowCmd,
+			swissuuid.GenerateUUIDCmd,
 		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
-		log.Fatal("Error in app.Run: ", err)
+		log.Fatal("Error in app.Run:\n", err)
 	}
 }
