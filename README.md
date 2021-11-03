@@ -4,8 +4,8 @@
 [![Release](https://github.com/beemensameh/swissknife-tools/actions/workflows/github-workflow.yml/badge.svg)](https://github.com/beemensameh/swissknife-tools/actions/workflows/github-workflow.yml)
 [![Build](https://github.com/beemensameh/swissknife-tools/actions/workflows/go-ci.yml/badge.svg)](https://github.com/beemensameh/swissknife-tools/actions/workflows/go-ci.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/beemensameh/swissknife-tools)](https://goreportcard.com/report/github.com/beemensameh/swissknife-tools)
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/organization/repository)
 [![codecov](https://codecov.io/gh/beemensameh/swissknife-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/vektra/mockery)
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/organization/repository)
 
 
 A quick and amazing tools for speed up your work
