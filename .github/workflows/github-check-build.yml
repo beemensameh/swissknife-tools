@@ -1,0 +1,47 @@
+name: check_build
+
+on:
+    push:
+        branches:
+            - development
+    pull_request:
+        branches:
+            - 'feature/**'
+            - 'fix/**'
+
+jobs:
+    linux32:
+        name: Check build linux-386 binary
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Check build
+              run: make tidy && make build-linux32
+    linux64:
+        name: Check build linux-amd64 binary
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Check build
+              run: make tidy && make build-linux64
+    win32:
+        name: Check build win32 binary
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Check build
+              run: make tidy && make build-win32
+    win64:
+        name: Check build win64 binary
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Check build
+              run: make tidy && make build-win64
+    macos:
+        name: Check build macos binary
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Check build
+              run: make tidy && make build-mac

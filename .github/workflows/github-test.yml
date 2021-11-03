@@ -1,0 +1,21 @@
+name: test
+
+on:
+    push:
+        branches:
+            - development
+    pull_request:
+        branches:
+            - "feature/**"
+            - "fix/**"
+
+jobs:
+    test:
+        name: Run test with coverage
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: unittest
+              run: make test-coverage
+            - name: upload coverage to codecov.io
+              run: bash <(curl -s https://codecov.io/bash)
