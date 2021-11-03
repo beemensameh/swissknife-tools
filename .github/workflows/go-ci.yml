@@ -1,15 +1,6 @@
-name: check-unittest
+name: build
 
-on:
-    push:
-        branches:
-            - development
-            - "feature/**"
-            - "fix/**"
-    pull_request:
-        branches:
-            - "feature/**"
-            - "fix/**"
+on: ["push", "pull_request"]
 
 jobs:
     test:
