@@ -1,11 +1,11 @@
-name: test
+name: check-unittest
 
 on:
     push:
         branches:
             - development
-            - 'feature/**'
-            - 'fix/**'
+            - "feature/**"
+            - "fix/**"
     pull_request:
         branches:
             - "feature/**"
@@ -15,8 +15,12 @@ jobs:
     test:
         name: Run test with coverage
         runs-on: ubuntu-latest
+        env:
+            CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         steps:
             - uses: actions/checkout@v2
+              with:
+                  fetch-depth: 2
             - name: Set up Go
               uses: actions/setup-go@v2
               with:
@@ -30,6 +34,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
+            - name: Set up Go
+              uses: actions/setup-go@v2
+              with:
+                  go-version: 1.17
             - name: Check build
               run: make tidy && make build-linux32
     linux64:
@@ -37,6 +45,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
+            - name: Set up Go
+              uses: actions/setup-go@v2
+              with:
+                  go-version: 1.17
             - name: Check build
               run: make tidy && make build-linux64
     win32:
@@ -44,6 +56,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
+            - name: Set up Go
+              uses: actions/setup-go@v2
+              with:
+                  go-version: 1.17
             - name: Check build
               run: make tidy && make build-win32
     win64:
@@ -51,6 +67,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
+            - name: Set up Go
+              uses: actions/setup-go@v2
+              with:
+                  go-version: 1.17
             - name: Check build
               run: make tidy && make build-win64
     macos:
@@ -58,6 +78,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
+            - name: Set up Go
+              uses: actions/setup-go@v2
+              with:
+                  go-version: 1.17
             - name: Check build
               run: make tidy && make build-mac
-
