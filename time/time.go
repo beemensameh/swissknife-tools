@@ -1,7 +1,6 @@
 package swisstime
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
@@ -50,13 +49,9 @@ func timeNow(timeCLI *TimeCLI) error {
 	}
 
 	if timeCLI.Update {
-		if timeCLI.Interval < 1 {
-			return errors.New("interval should be positive number")
-		} else {
-			ticker := time.NewTicker(time.Duration(timeCLI.Interval) * time.Second)
-			for range ticker.C {
-				fmt.Print(displayTime(time.Now(), timeCLI.Format))
-			}
+		ticker := time.NewTicker(time.Duration(timeCLI.Interval) * time.Second)
+		for range ticker.C {
+			fmt.Print(displayTime(time.Now(), timeCLI.Format))
 		}
 	} else {
 		fmt.Println(displayTime(time.Now(), timeCLI.Format))

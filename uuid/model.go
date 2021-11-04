@@ -39,10 +39,6 @@ func (uuidCLI *UUIDCLI) validated() error {
 	if err != nil {
 		var errorMessages []string
 
-		if _, ok := err.(*validator.InvalidValidationError); ok {
-			return errors.New(err.Error())
-		}
-
 		for _, err := range err.(validator.ValidationErrors) {
 			errorMessages = append(errorMessages, fmt.Sprintf("%s should be %s (%s)", err.Field(), err.Tag(), err.Param()))
 		}

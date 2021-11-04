@@ -47,9 +47,9 @@ func newTimeFormat(format int) string {
 }
 
 type TimeCLI struct {
-	Format   string `validate:"omitempty,gte=1,lte=15"`
-	Update   bool   `validate:"omitempty"`
-	Interval int    `validate:"omitempty,gte=1"`
+	Format   string
+	Update   bool
+	Interval int `validate:"omitempty,gte=1"`
 }
 
 func (uuidCLI *TimeCLI) validated() error {
@@ -58,10 +58,6 @@ func (uuidCLI *TimeCLI) validated() error {
 	err := validate.Struct(uuidCLI)
 	if err != nil {
 		var errorMessages []string
-
-		if _, ok := err.(*validator.InvalidValidationError); ok {
-			return errors.New(err.Error())
-		}
 
 		for _, err := range err.(validator.ValidationErrors) {
 			errorMessages = append(errorMessages, fmt.Sprintf("%s should be %s (%s)", err.Field(), err.Tag(), err.Param()))
