@@ -9,41 +9,26 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+var timeFromat = map[int]string{
+	1:  time.ANSIC,
+	2:  time.UnixDate,
+	3:  time.RubyDate,
+	4:  time.RFC822,
+	5:  time.RFC822Z,
+	6:  time.RFC850,
+	7:  time.RFC1123,
+	8:  time.RFC1123Z,
+	9:  time.RFC3339,
+	10: time.RFC3339Nano,
+	11: time.Kitchen,
+	12: time.Stamp,
+	13: time.StampMilli,
+	14: time.StampMicro,
+	15: time.StampNano,
+}
+
 func newTimeFormat(format int) string {
-	switch format {
-	case 1:
-		return time.ANSIC
-	case 2:
-		return time.UnixDate
-	case 3:
-		return time.RubyDate
-	case 4:
-		return time.RFC822
-	case 5:
-		return time.RFC822Z
-	case 6:
-		return time.RFC850
-	case 7:
-		return time.RFC1123
-	case 8:
-		return time.RFC1123Z
-	case 9:
-		return time.RFC3339
-	case 10:
-		return time.RFC3339Nano
-	case 11:
-		return time.Kitchen
-	case 12:
-		return time.Stamp
-	case 13:
-		return time.StampMilli
-	case 14:
-		return time.StampMicro
-	case 15:
-		return time.StampNano
-	default:
-		return ""
-	}
+	return timeFromat[format]
 }
 
 type TimeCLI struct {
