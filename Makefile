@@ -2,6 +2,15 @@ all:build
 
 build:build-linux32 build-linux64 build-win32 build-win64 build-mac
 
+test:
+	go test ./... -timeout 30s
+
+test-verbose:
+	go test ./... -race -covermode=atomic -timeout 30s -v
+
+test-coverage:
+	go test ./... -race -covermode=atomic -timeout 30s -coverprofile=coverage.out
+
 build-linux32:
 	GOOS=linux GOARCH=386 go build -mod=vendor -o=./bin/swisstool ./cmd/swissknife-tools/.
 

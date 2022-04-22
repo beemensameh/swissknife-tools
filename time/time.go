@@ -1,18 +1,19 @@
 package swisstime
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
 	"github.com/urfave/cli/v2"
 )
 
+const displayStyle = "\r%s"
+
 var TimeNowCmd = &cli.Command{
 	Name:    "time:now",
 	Usage:   "Get time now and update very i second and with f format",
 	Aliases: []string{"time:nw"},
-	Action:  timeNowAction,
+	Action:  TimeNowAction,
 	Flags: []cli.Flag{
 		&cli.IntFlag{
 			Name:    "format",
@@ -34,58 +35,35 @@ var TimeNowCmd = &cli.Command{
 	},
 }
 
-func timeNowAction(cliContext *cli.Context) error {
-	if cliContext.Bool("update") {
-		if cliContext.Int("interval") < 1 {
-			return errors.New("interval should be positive number")
-		} else {
-			ticker := time.NewTicker(time.Duration(cliContext.Int("interval")) * time.Second)
-			for range ticker.C {
-				fmt.Print(displayTime(cliContext.Int64("format")))
-			}
+func TimeNowAction(cliContext *cli.Context) error {
+	return timeNow(&TimeCLI{
+		Format:   newTimeFormat(cliContext.Int("format")),
+		Update:   cliContext.Bool("update"),
+		Interval: cliContext.Int("interval"),
+	})
+}
+
+func timeNow(timeCLI *TimeCLI) error {
+	if err := timeCLI.validated(); err != nil {
+		return err
+	}
+
+	if timeCLI.Update {
+		ticker := time.NewTicker(time.Duration(timeCLI.Interval) * time.Second)
+		for range ticker.C {
+			fmt.Print(displayTime(time.Now(), timeCLI.Format))
 		}
 	} else {
-		fmt.Println(displayTime(cliContext.Int64("format")))
+		fmt.Println(displayTime(time.Now(), timeCLI.Format))
 	}
 
 	return nil
 }
 
-func displayTime(format int64) string {
-	const displayStyle = "\r%s"
-
-	switch format {
-	case 1:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.ANSIC))
-	case 2:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.UnixDate))
-	case 3:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.RubyDate))
-	case 4:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.RFC822))
-	case 5:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.RFC822Z))
-	case 6:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.RFC850))
-	case 7:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.RFC1123))
-	case 8:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.RFC1123Z))
-	case 9:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.RFC3339))
-	case 10:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.RFC3339Nano))
-	case 11:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.Kitchen))
-	case 12:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.Stamp))
-	case 13:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.StampMilli))
-	case 14:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.StampMicro))
-	case 15:
-		return fmt.Sprintf(displayStyle, time.Now().Format(time.StampNano))
-	default:
-		return fmt.Sprintf(displayStyle, time.Now())
+func displayTime(timeNow time.Time, format string) string {
+	if format == "" {
+		return fmt.Sprintf(displayStyle, timeNow.String())
 	}
+
+	return fmt.Sprintf(displayStyle, timeNow.Format(format))
 }
