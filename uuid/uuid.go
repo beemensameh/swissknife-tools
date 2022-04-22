@@ -3,6 +3,7 @@ package swissuuid
 import (
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/google/uuid"
@@ -21,28 +22,21 @@ var GenerateUUIDCmd = &cli.Command{
 			Value:   4,
 			Aliases: []string{"v"},
 		},
-		&cli.StringFlag{
-			Name:    "uuid-type",
-			Usage:   "It is DCE uuid types (should be one of [group, person, security] and should add value when uuid version is 2)",
-			Value:   "group",
-			Aliases: []string{"uid-type"},
-		},
-		&cli.StringFlag{
+		&cli.IntFlag{
 			Name:    "uuid-security-type",
-			Usage:   "It is DCE security uuid types (should be one of [group, person, org] and should add value when uuid version is 2 and the uuid type is security)",
-			Value:   "group",
+			Usage:   "It is DCE security uuid types (should be one of [0, 1, 2] and should add value when uuid version is 2)",
+			Value:   0,
 			Aliases: []string{"uid-sec-type"},
 		},
 		&cli.StringFlag{
-			Name:    "name",
-			Usage:   "It is used for uuid version 3 and 5 (maybe anything - no constrained)",
-			Aliases: []string{"n"},
+			Name:  "name",
+			Usage: "It is used for uuid version 3 and 5 (maybe anything - no constrained)",
 		},
 		&cli.Int64Flag{
 			Name:    "number",
 			Usage:   "Number of UUID need to generate",
 			Value:   1,
-			Aliases: []string{"num"},
+			Aliases: []string{"n"},
 		},
 		&cli.StringFlag{
 			Name:    "separated",
@@ -54,12 +48,11 @@ var GenerateUUIDCmd = &cli.Command{
 
 func GenerateUUIDAction(cliContext *cli.Context) error {
 	return generateUUID(&UUIDCLI{
-		Version:          cliContext.Int("version"),
-		UUIDType:         UUIDTypeEnum(cliContext.String("uuid-type")),
-		UUIDSecurityType: UUIDDCESecurityEnum(cliContext.String("uuid-security-type")),
-		Name:             []byte(cliContext.String("name")),
-		Number:           cliContext.Int64("number"),
-		Separate:         cliContext.String("separated"),
+		Version:  cliContext.Int("version"),
+		Domain:   uuid.Domain(cliContext.Int("uuid-security-type")),
+		Name:     []byte(cliContext.String("name")),
+		Number:   cliContext.Int64("number"),
+		Separate: cliContext.String("separated"),
 	})
 }
 
@@ -74,8 +67,7 @@ func generateUUID(uuidCLI *UUIDCLI) error {
 	for range make([]int, uuidCLI.Number) {
 		uuid, err := uuidVersion(
 			uuidCLI.Version,
-			uuidCLI.UUIDType,
-			uuidCLI.UUIDSecurityType,
+			uuidCLI.Domain,
 			uuidCLI.Name,
 		)
 		if err != nil {
@@ -96,23 +88,14 @@ func generateUUID(uuidCLI *UUIDCLI) error {
 	return nil
 }
 
-func uuidVersion(version int, uuidType UUIDTypeEnum, uuidDCESecurity UUIDDCESecurityEnum, name []byte) (uuid.UUID, error) {
+func uuidVersion(version int, domain uuid.Domain, name []byte) (uuid.UUID, error) {
 	switch version {
 	case 0:
 		return uuid.Nil, nil
 	case 1:
 		return uuid.NewUUID()
 	case 2:
-		switch uuidType {
-		case DCEGroup:
-			return uuid.NewDCEGroup()
-		case DCEPerson:
-			return uuid.NewDCEPerson()
-		case DCESecurity:
-			return uuid.UUID{}, errors.New("DCESecurity doesn't support yet")
-		default:
-			return uuid.UUID{}, errors.New("UUID type doesn't exist")
-		}
+		return uuid.NewDCESecurity(domain, uint32(os.Getuid()))
 	case 3:
 		return uuid.NewMD5(uuid.New(), name), nil
 	case 4:

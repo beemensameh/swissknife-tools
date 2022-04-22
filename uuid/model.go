@@ -6,31 +6,15 @@ import (
 	"strings"
 
 	"github.com/go-playground/validator/v10"
-)
-
-type UUIDTypeEnum string
-
-const (
-	DCEGroup    UUIDTypeEnum = "group"
-	DCEPerson   UUIDTypeEnum = "person"
-	DCESecurity UUIDTypeEnum = "security"
-)
-
-type UUIDDCESecurityEnum string
-
-const (
-	Person UUIDDCESecurityEnum = "person"
-	Group  UUIDDCESecurityEnum = "group"
-	Org    UUIDDCESecurityEnum = "org"
+	"github.com/google/uuid"
 )
 
 type UUIDCLI struct {
-	Version          int                 `validate:"gte=0,lte=5"`
-	UUIDType         UUIDTypeEnum        `validate:"required_if=version 2,oneof=group person security"`
-	UUIDSecurityType UUIDDCESecurityEnum `validate:"required_if=uuidType security,oneof=group person org"`
-	Name             []byte              `validate:"omitempty"`
-	Number           int64               `validate:"required,number"`
-	Separate         string              `validate:"omitempty"`
+	Version  int         `validate:"required,gte=0,lte=5"`
+	Domain   uuid.Domain `validate:"required_if=version 2,oneof=0 1 2"`
+	Name     []byte      `validate:"omitempty"`
+	Number   int64       `validate:"required,number"`
+	Separate string      `validate:"omitempty"`
 }
 
 func (uuidCLI *UUIDCLI) validated() error {

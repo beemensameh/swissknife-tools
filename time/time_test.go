@@ -10,20 +10,17 @@ import (
 )
 
 func TestTimeNow(t *testing.T) {
-	testCases := []struct {
-		desc          string
+	testCases := map[string]struct {
 		timeCLI       TimeCLI
 		isFail        bool
 		expectedError error
 	}{
-		{
-			desc: "Should return time now successfully",
+		"Should return time now successfully": {
 			timeCLI: TimeCLI{
 				Format: newTimeFormat(0),
 			},
 		},
-		{
-			desc: "Should return validation error",
+		"Should return validation error": {
 			timeCLI: TimeCLI{
 				Format:   newTimeFormat(1),
 				Interval: -5,
@@ -33,15 +30,15 @@ func TestTimeNow(t *testing.T) {
 		},
 	}
 
-	for _, tC := range testCases {
-		tC := tC
-		t.Run(tC.desc, func(t *testing.T) {
+	for desc, tc := range testCases {
+		tc := tc
+		t.Run(desc, func(t *testing.T) {
 			t.Parallel()
 
-			err := timeNow(&tC.timeCLI)
+			err := timeNow(&tc.timeCLI)
 
-			if tC.isFail {
-				require.EqualError(t, err, tC.expectedError.Error())
+			if tc.isFail {
+				require.EqualError(t, err, tc.expectedError.Error())
 				return
 			}
 
