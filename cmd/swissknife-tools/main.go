@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	swisshashing "github.com/beemensameh/swissknife-tools/hashing"
 	swissjson "github.com/beemensameh/swissknife-tools/json"
 	swisstime "github.com/beemensameh/swissknife-tools/time"
 	swissuuid "github.com/beemensameh/swissknife-tools/uuid"
@@ -19,6 +20,7 @@ func main() {
 			swissjson.JsonMinifyCmd,
 			swisstime.TimeNowCmd,
 			swissuuid.GenerateUUIDCmd,
+			swisshashing.HashFileCmd,
 		},
 	}
 
