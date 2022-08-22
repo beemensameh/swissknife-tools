@@ -2,7 +2,7 @@ package swissjson
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"regexp"
 
 	"github.com/urfave/cli/v2"
@@ -37,7 +37,7 @@ func jsonMinifyAction(cliContext *cli.Context) error {
 func jsonMinify(jsonValidation *JsonValidation) error {
 	reg := regexp.MustCompile(`(?mi)^\s+|\n`)
 
-	file, err := ioutil.ReadFile(jsonValidation.InputPath)
+	file, err := os.ReadFile(jsonValidation.InputPath)
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func jsonMinify(jsonValidation *JsonValidation) error {
 
 	res := reg.ReplaceAllString(jsonValidation.JSON, "")
 	if jsonValidation.OutputPath != "" {
-		if err := ioutil.WriteFile(jsonValidation.OutputPath, []byte(res), 0644); err != nil {
+		if err := os.WriteFile(jsonValidation.OutputPath, []byte(res), 0644); err != nil {
 			return err
 		}
 	} else {
