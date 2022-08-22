@@ -8,7 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"hash/crc32"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/go-playground/validator/v10"
@@ -52,7 +52,7 @@ func (hashFile *HashFile) Validated() error {
 }
 
 func (hashFile *HashFile) Hash() (string, error) {
-	content, err := ioutil.ReadFile(hashFile.Path) // the file is inside the local directory
+	content, err := os.ReadFile(hashFile.Path) // the file is inside the local directory
 	if err != nil {
 		return "", err
 	}
