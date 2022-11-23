@@ -52,3 +52,4 @@ A quick and amazing tools for speed up your work
 * [Time](./docs/time.md)
 * [JSON](./docs/json.md)
 * [UUID](./docs/uuid.md)
+* [Hash](./docs/hash.md)
