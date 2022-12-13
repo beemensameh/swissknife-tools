@@ -28,3 +28,6 @@ build-mac:
 
 tidy:
 	go mod tidy && go mod vendor
+
+check:
+	govulncheck ./...
