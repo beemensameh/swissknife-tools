@@ -16,7 +16,7 @@ A quick and amazing tools for speed up your work
 ![Repo size](https://img.shields.io/github/repo-size/beemensameh/swissknife-tools)
 ![Number of downloads](https://img.shields.io/github/downloads/beemensameh/swissknife-tools/total)
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/beemensameh/swissknife-tools)
+[![Open in Visual Studio Code](https://img.shields.io/badge/-Open%20in%20Visual%20Studio%20Code-2365cb?logo=visualstudiocode&labelColor=2d2b32&logoColor=007acc)](https://github.dev/beemensameh/swissknife-tools)
 
 ## Features
 
