@@ -19,8 +19,7 @@ type UUIDCLI struct {
 
 func (uuidCLI *UUIDCLI) validated() error {
 	validate := validator.New()
-	err := validate.Struct(uuidCLI)
-	if err != nil {
+	if err := validate.Struct(uuidCLI); err != nil {
 		var errorMessages []string
 
 		for _, err := range err.(validator.ValidationErrors) {

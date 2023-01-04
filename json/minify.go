@@ -8,7 +8,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var JsonMinifyCmd = &cli.Command{
+var JSONMinifyCmd = &cli.Command{
 	Name:   "json:minify",
 	Usage:  "Minify json",
 	Action: jsonMinifyAction,
@@ -28,13 +28,13 @@ var JsonMinifyCmd = &cli.Command{
 }
 
 func jsonMinifyAction(cliContext *cli.Context) error {
-	return jsonMinify(&JsonValidation{
+	return jsonMinify(&JSONValidation{
 		InputPath:  cliContext.String("input"),
 		OutputPath: cliContext.String("output"),
 	})
 }
 
-func jsonMinify(jsonValidation *JsonValidation) error {
+func jsonMinify(jsonValidation *JSONValidation) error {
 	reg := regexp.MustCompile(`(?mi)^\s+|\n`)
 
 	file, err := os.ReadFile(jsonValidation.InputPath)
@@ -51,7 +51,7 @@ func jsonMinify(jsonValidation *JsonValidation) error {
 
 	res := reg.ReplaceAllString(jsonValidation.JSON, "")
 	if jsonValidation.OutputPath != "" {
-		if err := os.WriteFile(jsonValidation.OutputPath, []byte(res), 0644); err != nil {
+		if err := os.WriteFile(jsonValidation.OutputPath, []byte(res), 0o600); err != nil {
 			return err
 		}
 	} else {

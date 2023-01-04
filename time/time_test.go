@@ -48,7 +48,7 @@ func TestTimeNow(t *testing.T) {
 }
 
 func TestDisplayTime(t *testing.T) {
-	var testTime time.Time = time.Now()
+	testTime := time.Now()
 	type testCase struct {
 		timeCLI        TimeCLI
 		expectedResult string

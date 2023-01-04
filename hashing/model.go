@@ -33,8 +33,7 @@ type HashFile struct {
 
 func (hashFile *HashFile) Validated() error {
 	validate := validator.New()
-	err := validate.Struct(hashFile)
-	if err != nil {
+	if err := validate.Struct(hashFile); err != nil {
 		var errorMessages []string
 
 		if _, ok := err.(*validator.InvalidValidationError); ok {

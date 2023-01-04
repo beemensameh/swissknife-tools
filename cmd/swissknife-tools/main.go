@@ -17,7 +17,7 @@ func main() {
 		Usage:       "A CLI application for many tools",
 		Description: "A quick and amazing tools for speed up your work",
 		Commands: []*cli.Command{
-			swissjson.JsonMinifyCmd,
+			swissjson.JSONMinifyCmd,
 			swisstime.TimeNowCmd,
 			swissuuid.GenerateUUIDCmd,
 			swisshashing.HashFileCmd,
