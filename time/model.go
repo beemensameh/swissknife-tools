@@ -1,15 +1,12 @@
 package swisstime
 
 import (
-	"errors"
-	"fmt"
-	"strings"
 	"time"
 
-	"github.com/go-playground/validator/v10"
+	"github.com/beemensameh/swissknife-tools/internal/color"
 )
 
-var timeFromat = map[int]string{
+var timeFormat = map[uint]string{
 	1:  time.ANSIC,
 	2:  time.UnixDate,
 	3:  time.RubyDate,
@@ -27,29 +24,19 @@ var timeFromat = map[int]string{
 	15: time.StampNano,
 }
 
-func newTimeFormat(format int) string {
-	return timeFromat[format]
+func newTimeFormat(format uint) string {
+	return timeFormat[format]
 }
 
 type TimeCLI struct {
 	Format   string
 	Update   bool
-	Interval int `validate:"omitempty,gte=1"`
+	Interval uint
 }
 
-func (uuidCLI *TimeCLI) validated() error {
-	validate := validator.New()
-
-	err := validate.Struct(uuidCLI)
-	if err != nil {
-		var errorMessages []string
-
-		for _, err := range err.(validator.ValidationErrors) {
-			errorMessages = append(errorMessages, fmt.Sprintf("%s should be %s (%s)", err.Field(), err.Tag(), err.Param()))
-		}
-
-		return errors.New(strings.Join(errorMessages, "\n"))
+func (timeCLI *TimeCLI) validated() {
+	if timeCLI.Interval <= 0 && timeCLI.Update {
+		color.PrintlnColor("Interval should be large that 0. Change interval to 1.", color.Yellow)
+		timeCLI.Interval = 1
 	}
-
-	return nil
 }

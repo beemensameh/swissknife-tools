@@ -1,7 +1,6 @@
 package swisstime
 
 import (
-	"errors"
 	"fmt"
 	"testing"
 	"time"
@@ -11,22 +10,18 @@ import (
 
 func TestTimeNow(t *testing.T) {
 	testCases := map[string]struct {
-		timeCLI       TimeCLI
-		isFail        bool
-		expectedError error
+		timeCLI TimeCLI
 	}{
 		"Should return time now successfully": {
 			timeCLI: TimeCLI{
 				Format: newTimeFormat(0),
 			},
 		},
-		"Should return validation error": {
+		"Should return time now even the interval is negative or zero": {
 			timeCLI: TimeCLI{
 				Format:   newTimeFormat(1),
-				Interval: -5,
+				Interval: 0,
 			},
-			isFail:        true,
-			expectedError: errors.New("Interval should be gte (1)"),
 		},
 	}
 
@@ -36,12 +31,6 @@ func TestTimeNow(t *testing.T) {
 			t.Parallel()
 
 			err := timeNow(&tc.timeCLI)
-
-			if tc.isFail {
-				require.EqualError(t, err, tc.expectedError.Error())
-				return
-			}
-
 			require.Nil(t, err)
 		})
 	}
@@ -63,12 +52,12 @@ func TestDisplayTime(t *testing.T) {
 		},
 	}
 
-	for i, v := range timeFromat {
+	for i, v := range timeFormat {
 		testCases[fmt.Sprintf("Should return time with %s format, when pass format number %d", v, i)] = testCase{
 			timeCLI: TimeCLI{
 				Format: newTimeFormat(i),
 			},
-			expectedResult: fmt.Sprintf(displayStyle, testTime.Format(timeFromat[i])),
+			expectedResult: fmt.Sprintf(displayStyle, testTime.Format(timeFormat[i])),
 		}
 	}
 
