@@ -35,7 +35,8 @@ func jsonMinifyAction(cliContext *cli.Context) error {
 }
 
 func jsonMinify(jsonValidation *JSONValidation) error {
-	reg := regexp.MustCompile(`(?mi)^\s+|\n`)
+	reg := regexp.MustCompile(`(?mi)(^\s+|\n)`)
+	reg2 := regexp.MustCompile(`(?mi)(\s+:|:\s+)`)
 
 	file, err := os.ReadFile(jsonValidation.InputPath)
 	if err != nil {
@@ -50,12 +51,13 @@ func jsonMinify(jsonValidation *JSONValidation) error {
 	}
 
 	res := reg.ReplaceAllString(jsonValidation.JSON, "")
+	res2 := reg2.ReplaceAllString(res, ":")
 	if jsonValidation.OutputPath != "" {
-		if err := os.WriteFile(jsonValidation.OutputPath, []byte(res), 0o600); err != nil {
+		if err := os.WriteFile(jsonValidation.OutputPath, []byte(res2), 0o600); err != nil {
 			return err
 		}
 	} else {
-		fmt.Println(res)
+		fmt.Println(res2)
 	}
 
 	return nil
