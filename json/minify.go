@@ -3,12 +3,11 @@ package swissjson
 import (
 	"fmt"
 	"os"
-	"regexp"
 
 	"github.com/urfave/cli/v2"
 )
 
-var JsonMinifyCmd = &cli.Command{
+var JSONMinifyCmd = &cli.Command{
 	Name:   "json:minify",
 	Usage:  "Minify json",
 	Action: jsonMinifyAction,
@@ -28,34 +27,33 @@ var JsonMinifyCmd = &cli.Command{
 }
 
 func jsonMinifyAction(cliContext *cli.Context) error {
-	return jsonMinify(&JsonValidation{
+	return jsonMinify(&JSONValidation{
 		InputPath:  cliContext.String("input"),
 		OutputPath: cliContext.String("output"),
 	})
 }
 
-func jsonMinify(jsonValidation *JsonValidation) error {
-	reg := regexp.MustCompile(`(?mi)^\s+|\n`)
-
-	file, err := os.ReadFile(jsonValidation.InputPath)
+func jsonMinify(j *JSONValidation) error {
+	file, err := os.ReadFile(j.InputPath)
 	if err != nil {
 		return err
 	}
 
-	jsonValidation.JSON = string(file)
+	j.JSON = string(file)
 
-	err = jsonValidation.validated()
+	err = j.validated()
 	if err != nil {
 		return err
 	}
 
-	res := reg.ReplaceAllString(jsonValidation.JSON, "")
-	if jsonValidation.OutputPath != "" {
-		if err := os.WriteFile(jsonValidation.OutputPath, []byte(res), 0644); err != nil {
+	j.Minify()
+
+	if j.OutputPath != "" {
+		if err := os.WriteFile(j.OutputPath, []byte(j.JSON), 0o600); err != nil {
 			return err
 		}
 	} else {
-		fmt.Println(res)
+		fmt.Println(j.JSON)
 	}
 
 	return nil

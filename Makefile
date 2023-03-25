@@ -28,3 +28,9 @@ build-mac:
 
 tidy:
 	go mod tidy && go mod vendor
+
+vulncheck:
+	govulncheck ./...
+
+lint:
+	golangci-lint run

@@ -11,7 +11,7 @@ const displayStyle = "\r%s"
 
 var TimeNowCmd = &cli.Command{
 	Name:    "time:now",
-	Usage:   "Get time now and update very i second and with f format",
+	Usage:   "Get time now and update every i second with f format",
 	Aliases: []string{"time:nw"},
 	Action:  TimeNowAction,
 	Flags: []cli.Flag{
@@ -37,16 +37,14 @@ var TimeNowCmd = &cli.Command{
 
 func TimeNowAction(cliContext *cli.Context) error {
 	return timeNow(&TimeCLI{
-		Format:   newTimeFormat(cliContext.Int("format")),
+		Format:   newTimeFormat(cliContext.Uint("format")),
 		Update:   cliContext.Bool("update"),
-		Interval: cliContext.Int("interval"),
+		Interval: cliContext.Uint("interval"),
 	})
 }
 
 func timeNow(timeCLI *TimeCLI) error {
-	if err := timeCLI.validated(); err != nil {
-		return err
-	}
+	timeCLI.validated()
 
 	if timeCLI.Update {
 		ticker := time.NewTicker(time.Duration(timeCLI.Interval) * time.Second)
