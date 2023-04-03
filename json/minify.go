@@ -28,28 +28,21 @@ var JSONMinifyCmd = &cli.Command{
 
 func jsonMinifyAction(cliContext *cli.Context) error {
 	return jsonMinify(&JSONValidation{
-		InputPath:  cliContext.String("input"),
-		OutputPath: cliContext.String("output"),
+		Input:  cliContext.String("input"),
+		Output: cliContext.String("output"),
 	})
 }
 
 func jsonMinify(j *JSONValidation) error {
-	file, err := os.ReadFile(j.InputPath)
-	if err != nil {
-		return err
-	}
-
-	j.JSON = string(file)
-
-	err = j.validated()
+	err := j.validated()
 	if err != nil {
 		return err
 	}
 
 	j.Minify()
 
-	if j.OutputPath != "" {
-		if err := os.WriteFile(j.OutputPath, []byte(j.JSON), 0o600); err != nil {
+	if j.Output != "" {
+		if err := os.WriteFile(j.Output, []byte(j.JSON), 0o600); err != nil {
 			return err
 		}
 	} else {

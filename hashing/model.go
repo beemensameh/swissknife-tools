@@ -33,10 +33,10 @@ type HashFile struct {
 
 func (hf *HashFile) Validated() error {
 	if f, err := os.Stat(hf.Path); err != nil {
-		return errors.New(color.SprintFColor("Should pass a valid path file", color.Red))
+		return errors.New(color.SprintfColor("Should pass a valid path file", color.Red))
 	} else {
 		if f.IsDir() {
-			return errors.New(color.SprintFColor("Should pass a file not a directory", color.Red))
+			return errors.New(color.SprintfColor("Should pass a file not a directory", color.Red))
 		}
 	}
 
@@ -52,7 +52,7 @@ func (hf *HashFile) Validated() error {
 		case CRC32, MD5, SHA1, SHA256, SHA384, SHA512, All:
 			return nil
 		default:
-			return errors.New(color.SprintFColor("Invalid algorithm", color.Red))
+			return errors.New(color.SprintfColor("Invalid algorithm", color.Red))
 		}
 	}
 	return nil
