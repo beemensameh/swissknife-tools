@@ -39,7 +39,7 @@ func PrintlnColor(message string, c color) {
 	if !strings.HasSuffix(message, "\n") {
 		message += "\n"
 	}
-	fmt.Printf(SprintfColor(message, c))
+	fmt.Print(SprintfColor(message, c))
 }
 
 func SprintfColor(message string, c color) string {
