@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	swisshashing "github.com/beemensameh/swissknife-tools/hashing"
 	swissjson "github.com/beemensameh/swissknife-tools/json"
 	swisstime "github.com/beemensameh/swissknife-tools/time"
 	"github.com/spf13/cobra"
@@ -22,6 +23,7 @@ func main() {
 	}
 	rootCmd.AddCommand(swisstime.TimeNowCmd)
 	rootCmd.AddCommand(swissjson.JSONMinifyCmd)
+	rootCmd.AddCommand(swisshashing.HashFileCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)

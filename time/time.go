@@ -15,9 +15,10 @@ var (
 
 	TimeNowCmd = &cobra.Command{
 		Use:     "time:now",
-		Short:   "Get time now and update every i second with f format",
+		Short:   "Get time now",
+		Long:    "Get time now and update every i second with f format",
 		Aliases: []string{"time:nw"},
-		Run:     TimeNowAction,
+		Run:     timeNowAction,
 	}
 )
 
@@ -27,7 +28,7 @@ func init() {
 	TimeNowCmd.Flags().UintVarP(&interval, "interval", "i", 1, "update the display time every i sec")
 }
 
-func TimeNowAction(cmd *cobra.Command, args []string) {
+func timeNowAction(cmd *cobra.Command, args []string) {
 	timeNow(&TimeCLI{
 		Format:   newTimeFormat(format),
 		Update:   update,
