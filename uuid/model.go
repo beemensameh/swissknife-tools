@@ -2,10 +2,8 @@ package swissuuid
 
 import (
 	"errors"
-	"fmt"
-	"strings"
 
-	"github.com/go-playground/validator/v10"
+	"github.com/beemensameh/swissknife-tools/internal/color"
 	"github.com/google/uuid"
 )
 
@@ -17,16 +15,15 @@ type UUIDCLI struct {
 	Separate string      `validate:"omitempty"`
 }
 
-func (uuidCLI *UUIDCLI) validated() error {
-	validate := validator.New()
-	if err := validate.Struct(uuidCLI); err != nil {
-		var errorMessages []string
-
-		for _, err := range err.(validator.ValidationErrors) {
-			errorMessages = append(errorMessages, fmt.Sprintf("%s should be %s (%s)", err.Field(), err.Tag(), err.Param()))
-		}
-
-		return errors.New(strings.Join(errorMessages, "\n"))
+func (u *UUIDCLI) validated() error {
+	if u.Version < 0 || u.Version > 5 {
+		return errors.New(color.SprintfColor("The version should be between 0 to 5", color.Red))
+	}
+	if u.Version == 2 && u.Domain > 2 {
+		return errors.New(color.SprintfColor("The uuid security type should be between 0 to 2", color.Red))
+	}
+	if u.Number < 1 {
+		color.PrintlnColor("The number of generated uuids should be large than 0 (changed to 1)", color.Yellow)
 	}
 
 	return nil
