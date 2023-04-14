@@ -1,35 +1,36 @@
 package swissjson
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 	"regexp"
-	"strings"
 
-	"github.com/go-playground/validator/v10"
+	"github.com/beemensameh/swissknife-tools/internal/color"
+	"github.com/beemensameh/swissknife-tools/internal/validate"
 )
 
 type JSONValidation struct {
-	InputPath  string `validate:"required,file"`
-	OutputPath string `validate:"omitempty"`
-	JSON       string `validate:"required,json"`
+	Input  string
+	Output string
+	JSON   string
 }
 
 func (j *JSONValidation) validated() error {
-	validate := validator.New()
-	if err := validate.Struct(j); err != nil {
-		var errorMessages []string
-
-		if _, ok := err.(*validator.InvalidValidationError); ok {
-			return errors.New(err.Error())
-		}
-
-		for _, err := range err.(validator.ValidationErrors) {
-			errorMessages = append(errorMessages, fmt.Sprintf("%s should be %s (%s)", err.Field(), err.Tag(), err.Param()))
-		}
-
-		return errors.New(strings.Join(errorMessages, "\n"))
+	if !validate.IsFile(j.Input) {
+		return errors.New(color.SprintfColor("Should enter a valid input file path", color.Red))
 	}
+
+	file, err := os.ReadFile(j.Input)
+	if err != nil {
+		return err
+	}
+	if !json.Valid(file) {
+		return errors.New(color.SprintfColor("The file not have valid json", color.Red))
+	}
+
+	j.JSON = string(file)
 
 	return nil
 }

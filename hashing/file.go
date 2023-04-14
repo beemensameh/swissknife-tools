@@ -33,13 +33,13 @@ func hashFileAction(cliContext *cli.Context) error {
 	})
 }
 
-func hashFile(hashFile *HashFile) error {
-	err := hashFile.Validated()
+func hashFile(hf *HashFile) error {
+	err := hf.Validated()
 	if err != nil {
 		return err
 	}
 
-	hash, err := hashFile.Hash()
+	hash, err := hf.Hash()
 	if err != nil {
 		return err
 	}
