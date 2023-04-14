@@ -15,21 +15,25 @@ var (
 	v, ust    int
 	num       int64
 
-	GenerateUUIDCmd = &cobra.Command{
-		Use:     "uuid:generate",
-		Short:   "Generate UUID for any UUID version",
-		Long:    "Generate UUID for any UUID version with many other configuration depend on the UUID type",
-		Aliases: []string{"uuid:gen"},
-		RunE:    generateUUIDAction,
+	UUIDCmd = &cobra.Command{
+		Use:   "uuid",
+		Short: "Use uuid tool",
 	}
 )
 
 func init() {
-	GenerateUUIDCmd.Flags().IntVarP(&v, "version", "v", 4, "The uuid version")
-	GenerateUUIDCmd.Flags().IntVarP(&ust, "uuid-security-type", "u", 0, "It is DCE security uuid types (should be one of [0, 1, 2] and should add value when uuid version is 2)")
-	GenerateUUIDCmd.Flags().StringVarP(&name, "name", "", "", "It is used for uuid version 3 and 5 (maybe anything - no constrained)")
-	GenerateUUIDCmd.Flags().Int64VarP(&num, "number", "n", 1, "Number of UUID need to generate")
-	GenerateUUIDCmd.Flags().StringVarP(&sep, "separated", "s", "", "The separated character that should separate UUIDs")
+	generateCmd := &cobra.Command{
+		Use:   "generate",
+		Short: "Generate UUID for any UUID version",
+		Long:  "Generate UUID for any UUID version with many other configuration depend on the UUID type",
+		RunE:  generateUUIDAction,
+	}
+	generateCmd.Flags().IntVarP(&v, "version", "v", 4, "The uuid version")
+	generateCmd.Flags().IntVarP(&ust, "uuid-security-type", "u", 0, "It is DCE security uuid types (should be one of [0, 1, 2] and should add value when uuid version is 2)")
+	generateCmd.Flags().StringVarP(&name, "name", "", "", "It is used for uuid version 3 and 5 (maybe anything - no constrained)")
+	generateCmd.Flags().Int64VarP(&num, "number", "n", 1, "Number of UUID need to generate")
+	generateCmd.Flags().StringVarP(&sep, "separated", "s", "", "The separated character that should separate UUIDs")
+	UUIDCmd.AddCommand(generateCmd)
 }
 
 func generateUUIDAction(cmd *cobra.Command, args []string) error {

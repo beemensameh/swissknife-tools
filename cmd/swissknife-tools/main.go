@@ -22,10 +22,10 @@ func main() {
 		Long:    "A quick and amazing CLI application with many tools for speed up your work",
 		Version: version,
 	}
-	rootCmd.AddCommand(swisstime.TimeNowCmd)
-	rootCmd.AddCommand(swissjson.JSONMinifyCmd)
-	rootCmd.AddCommand(swisshashing.HashFileCmd)
-	rootCmd.AddCommand(swissuuid.GenerateUUIDCmd)
+	rootCmd.AddCommand(swisstime.TimeCmd)
+	rootCmd.AddCommand(swissjson.JSONCmd)
+	rootCmd.AddCommand(swisshashing.HashCmd)
+	rootCmd.AddCommand(swissuuid.UUIDCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)

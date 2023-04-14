@@ -11,23 +11,27 @@ import (
 var (
 	input, output string
 
-	JSONMinifyCmd = &cobra.Command{
-		Use:     "json:minify",
-		Short:   "Minify json",
-		Aliases: []string{"json:min"},
-		RunE:    jsonMinifyAction,
+	JSONCmd = &cobra.Command{
+		Use:   "json",
+		Short: "Use json tool",
 	}
 )
 
 func init() {
-	JSONMinifyCmd.Flags().StringVarP(&input, "input", "i", "", "The path for the input file")
-	JSONMinifyCmd.Flags().StringVarP(&output, "output", "o", "", "The path for the output file (if this flag doesn't add will print it in terminal)")
-	if err := JSONMinifyCmd.MarkFlagRequired("input"); err != nil {
+	minifyCmd := &cobra.Command{
+		Use:   "minify",
+		Short: "Minify json",
+		RunE:  jsonMinifyAction,
+	}
+	minifyCmd.Flags().StringVarP(&input, "input", "i", "", "The path for the input file")
+	minifyCmd.Flags().StringVarP(&output, "output", "o", "", "The path for the output file (if this flag doesn't add will print it in terminal)")
+	if err := minifyCmd.MarkFlagRequired("input"); err != nil {
 		log.Fatal(err)
 	}
-	if err := JSONMinifyCmd.MarkFlagFilename("input", "txt", "json"); err != nil {
+	if err := minifyCmd.MarkFlagFilename("input", "txt", "json"); err != nil {
 		log.Fatal(err)
 	}
+	JSONCmd.AddCommand(minifyCmd)
 }
 
 func jsonMinifyAction(cmd *cobra.Command, args []string) error {

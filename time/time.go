@@ -13,19 +13,23 @@ var (
 	format, interval uint
 	update           bool
 
-	TimeNowCmd = &cobra.Command{
-		Use:     "time:now",
-		Short:   "Get time now",
-		Long:    "Get time now and update every i second with f format",
-		Aliases: []string{"time:nw"},
-		Run:     timeNowAction,
+	TimeCmd = &cobra.Command{
+		Use:   "time",
+		Short: "Use time tool",
 	}
 )
 
 func init() {
-	TimeNowCmd.Flags().UintVarP(&format, "format", "f", 0, "time format (see ./docs/time.md)")
-	TimeNowCmd.Flags().BoolVarP(&update, "update", "u", false, "refresh the time depend on interval")
-	TimeNowCmd.Flags().UintVarP(&interval, "interval", "i", 1, "update the display time every i sec")
+	nowCmd := &cobra.Command{
+		Use:   "now",
+		Short: "Get time now",
+		Long:  "Get time now and update every i second with f format",
+		Run:   timeNowAction,
+	}
+	nowCmd.Flags().UintVarP(&format, "format", "f", 0, "time format (see ./docs/time.md)")
+	nowCmd.Flags().BoolVarP(&update, "update", "u", false, "refresh the time depend on interval")
+	nowCmd.Flags().UintVarP(&interval, "interval", "i", 1, "update the display time every i sec")
+	TimeCmd.AddCommand(nowCmd)
 }
 
 func timeNowAction(cmd *cobra.Command, args []string) {

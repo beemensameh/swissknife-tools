@@ -1,16 +1,16 @@
 # Time
 
 You have some command that you can use them related to time
-* Now `time:now`
+* Now [`time now`](#time-now)
 
-## `time:now`
+## `time now`
 You have a many flags to run the command.
 - `--update` for make the time continuously update
 - `--interval` for how many seconds should update the display time (Work with `--update` tag and should be positive number)
 - `--format` for show the time with a specific format. this format should be integer follow this table:
 
 Value|Format name|Time format|Note
------|-----------|-----------|----
+---|---|---|---
 1|ANSIC|Mon Jan _2 15:04:05 2006
 2|UnixDate|Mon Jan _2 15:04:05 MST 2006
 3|RubyDate|Mon Jan 02 15:04:05 -0700 2006
