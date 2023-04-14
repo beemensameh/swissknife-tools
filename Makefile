@@ -1,3 +1,5 @@
+VERSION := 0.4.0
+
 all:build
 
 build:build-linux32 build-linux64 build-win32 build-win64 build-mac
@@ -12,19 +14,19 @@ test-coverage:
 	go test ./... -race -covermode=atomic -timeout 30s -coverprofile=coverage.out
 
 build-linux32:
-	GOOS=linux GOARCH=386 go build -mod=vendor -o=./bin/swisstool ./cmd/swissknife-tools/.
+	GOOS=linux GOARCH=386 go build -ldflags "-X main.name=swisstool -X main.version=$(VERSION)" -mod=vendor -o=./bin/swisstool ./cmd/swissknife-tools/.
 
 build-linux64:
-	GOOS=linux GOARCH=amd64 go build -mod=vendor -o=./bin/swisstool-amd64 -race ./cmd/swissknife-tools/.
+	GOOS=linux GOARCH=amd64 go build -ldflags "-X main.name=swisstool-amd64 -X main.version=$(VERSION)" -mod=vendor -o=./bin/swisstool-amd64 -race ./cmd/swissknife-tools/.
 
 build-win32:
-	GOOS=windows GOARCH=386 go build -mod=vendor -o=./bin/swisstool-i386.exe ./cmd/swissknife-tools/.
+	GOOS=windows GOARCH=386 go build -ldflags "-X main.name=swisstool-i386.exe -X main.version=$(VERSION)" -mod=vendor -o=./bin/swisstool-i386.exe ./cmd/swissknife-tools/.
 
 build-win64:
-	GOOS=windows GOARCH=amd64 go build -mod=vendor -o=./bin/swisstool-x64.exe ./cmd/swissknife-tools/.
+	GOOS=windows GOARCH=amd64 go build -ldflags "-X main.name=swisstool-x64.exe -X main.version=$(VERSION)" -mod=vendor -o=./bin/swisstool-x64.exe ./cmd/swissknife-tools/.
 
 build-mac:
-	GOOS=darwin GOARCH=amd64 go build -mod=vendor -o=./bin/swisstool-darwin-amd64 ./cmd/swissknife-tools/.
+	GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.name=swisstool-darwin-amd64 -X main.version=$(VERSION)" -mod=vendor -o=./bin/swisstool-darwin-amd64 ./cmd/swissknife-tools/.
 
 tidy:
 	go mod tidy && go mod vendor
