@@ -34,7 +34,7 @@ jobs:
               with:
                   go-version: 1.20.3
             - name: Check build
-              run: make vendor && make build-linux32
+              run: make tidy && make build-linux32
     linux64:
         name: Check build linux-amd64 binary
         runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
               with:
                   go-version: 1.20.3
             - name: Check build
-              run: make vendor && make build-linux64
+              run: make tidy && make build-linux64
     win32:
         name: Check build win32 binary
         runs-on: ubuntu-latest
@@ -56,7 +56,7 @@ jobs:
               with:
                   go-version: 1.20.3
             - name: Check build
-              run: make vendor && make build-win32
+              run: make tidy && make build-win32
     win64:
         name: Check build win64 binary
         runs-on: ubuntu-latest
@@ -67,7 +67,7 @@ jobs:
               with:
                   go-version: 1.20.3
             - name: Check build
-              run: make vendor && make build-win64
+              run: make tidy && make build-win64
     macos:
         name: Check build macos binary
         runs-on: ubuntu-latest
@@ -78,4 +78,4 @@ jobs:
               with:
                   go-version: 1.20.3
             - name: Check build
-              run: make vendor && make build-mac
+              run: make tidy && make build-mac
