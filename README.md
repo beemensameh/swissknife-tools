@@ -12,7 +12,7 @@ A quick and amazing tools for speed up your work
 [![Go Report Card](https://goreportcard.com/badge/github.com/beemensameh/swissknife-tools)](https://goreportcard.com/report/github.com/beemensameh/swissknife-tools)
 [![codecov](https://codecov.io/gh/beemensameh/swissknife-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/vektra/mockery)
 
-![license](https://img.shields.io/github/license/beemensameh/swissknife-tools)
+[![license](https://img.shields.io/github/license/beemensameh/swissknife-tools)](https://github.com/beemensameh/swissknife-tools/blob/main/LICENCE)
 ![Repo size](https://img.shields.io/github/repo-size/beemensameh/swissknife-tools)
 ![Number of downloads](https://img.shields.io/github/downloads/beemensameh/swissknife-tools/total)
 
