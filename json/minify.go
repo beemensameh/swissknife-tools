@@ -25,6 +25,9 @@ func init() {
 	if err := JSONMinifyCmd.MarkFlagRequired("input"); err != nil {
 		log.Fatal(err)
 	}
+	if err := JSONMinifyCmd.MarkFlagFilename("input", "txt", "json"); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func jsonMinifyAction(cmd *cobra.Command, args []string) error {

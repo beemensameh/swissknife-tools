@@ -6,6 +6,7 @@ import (
 	swisshashing "github.com/beemensameh/swissknife-tools/hashing"
 	swissjson "github.com/beemensameh/swissknife-tools/json"
 	swisstime "github.com/beemensameh/swissknife-tools/time"
+	swissuuid "github.com/beemensameh/swissknife-tools/uuid"
 	"github.com/spf13/cobra"
 )
 
@@ -24,6 +25,7 @@ func main() {
 	rootCmd.AddCommand(swisstime.TimeNowCmd)
 	rootCmd.AddCommand(swissjson.JSONMinifyCmd)
 	rootCmd.AddCommand(swisshashing.HashFileCmd)
+	rootCmd.AddCommand(swissuuid.GenerateUUIDCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
