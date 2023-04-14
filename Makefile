@@ -26,7 +26,7 @@ build-win64:
 build-mac:
 	GOOS=darwin GOARCH=amd64 go build -mod=vendor -o=./bin/swisstool-darwin-amd64 ./cmd/swissknife-tools/.
 
-tidy:
+vendor:
 	go mod tidy && go mod vendor
 
 vulncheck:
