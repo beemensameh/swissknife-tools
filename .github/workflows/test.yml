@@ -1,10 +1,9 @@
 name: build
 
 on:
-    push:
-        branches:
-            - "development"
-            - "main"
+    pull_request:
+        types:
+            - "opened"
 
 jobs:
     test:
@@ -23,7 +22,9 @@ jobs:
             - name: Run golangci-lint
               uses: golangci/golangci-lint-action@v3
             - name: test
-              run: make test
+              run: make test-coverage
+            - name: upload coverage to codecov.io
+              run: bash <(curl -s https://codecov.io/bash)
     linux32:
         name: Check build linux-386 binary
         runs-on: ubuntu-latest
