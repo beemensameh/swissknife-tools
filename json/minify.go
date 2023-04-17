@@ -2,34 +2,42 @@ package swissjson
 
 import (
 	"fmt"
+	"log"
 	"os"
 
-	"github.com/urfave/cli/v2"
+	"github.com/spf13/cobra"
 )
 
-var JSONMinifyCmd = &cli.Command{
-	Name:   "json:minify",
-	Usage:  "Minify json",
-	Action: jsonMinifyAction,
-	Flags: []cli.Flag{
-		&cli.StringFlag{
-			Name:     "input",
-			Usage:    "The path for the input file (required)",
-			Aliases:  []string{"in"},
-			Required: true,
-		},
-		&cli.StringFlag{
-			Name:    "output",
-			Usage:   "The path for the output file (if this flag doesn't add will print it in terminal)",
-			Aliases: []string{"o"},
-		},
-	},
+var (
+	input, output string
+
+	JSONCmd = &cobra.Command{
+		Use:   "json",
+		Short: "Use json tool",
+	}
+)
+
+func init() {
+	minifyCmd := &cobra.Command{
+		Use:   "minify",
+		Short: "Minify json",
+		RunE:  jsonMinifyAction,
+	}
+	minifyCmd.Flags().StringVarP(&input, "input", "i", "", "The path for the input file")
+	minifyCmd.Flags().StringVarP(&output, "output", "o", "", "The path for the output file (if this flag doesn't add will print it in terminal)")
+	if err := minifyCmd.MarkFlagRequired("input"); err != nil {
+		log.Fatal(err)
+	}
+	if err := minifyCmd.MarkFlagFilename("input", "txt", "json"); err != nil {
+		log.Fatal(err)
+	}
+	JSONCmd.AddCommand(minifyCmd)
 }
 
-func jsonMinifyAction(cliContext *cli.Context) error {
+func jsonMinifyAction(cmd *cobra.Command, args []string) error {
 	return jsonMinify(&JSONValidation{
-		Input:  cliContext.String("input"),
-		Output: cliContext.String("output"),
+		Input:  input,
+		Output: output,
 	})
 }
 

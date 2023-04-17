@@ -4,64 +4,58 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/urfave/cli/v2"
+	"github.com/spf13/cobra"
 )
 
 const displayStyle = "\r%s"
 
-var TimeNowCmd = &cli.Command{
-	Name:    "time:now",
-	Usage:   "Get time now and update every i second with f format",
-	Aliases: []string{"time:nw"},
-	Action:  TimeNowAction,
-	Flags: []cli.Flag{
-		&cli.IntFlag{
-			Name:    "format",
-			Usage:   "Time format (the value should be int)",
-			Aliases: []string{"f"},
-		},
-		&cli.BoolFlag{
-			Name:    "update",
-			Usage:   "Is time should continuously update",
-			Value:   false,
-			Aliases: []string{"up"},
-		},
-		&cli.IntFlag{
-			Name:    "interval",
-			Usage:   "Interval of update the display time (Work with `update` tag and should be positive number)",
-			Value:   1,
-			Aliases: []string{"i"},
-		},
-	},
+var (
+	format, interval uint
+	update           bool
+
+	TimeCmd = &cobra.Command{
+		Use:   "time",
+		Short: "Use time tool",
+	}
+)
+
+func init() {
+	nowCmd := &cobra.Command{
+		Use:   "now",
+		Short: "Get time now",
+		Long:  "Get time now and update every i second with f format",
+		Run:   timeNowAction,
+	}
+	nowCmd.Flags().UintVarP(&format, "format", "f", 0, "time format (see ./docs/time.md)")
+	nowCmd.Flags().BoolVarP(&update, "update", "u", false, "refresh the time depend on interval")
+	nowCmd.Flags().UintVarP(&interval, "interval", "i", 1, "update the display time every i sec")
+	TimeCmd.AddCommand(nowCmd)
 }
 
-func TimeNowAction(cliContext *cli.Context) error {
-	return timeNow(&TimeCLI{
-		Format:   newTimeFormat(cliContext.Uint("format")),
-		Update:   cliContext.Bool("update"),
-		Interval: cliContext.Uint("interval"),
+func timeNowAction(cmd *cobra.Command, args []string) {
+	timeNow(&TimeCLI{
+		Format:   newTimeFormat(format),
+		Update:   update,
+		Interval: interval,
 	})
 }
 
-func timeNow(timeCLI *TimeCLI) error {
-	timeCLI.validated()
-
-	if timeCLI.Update {
-		ticker := time.NewTicker(time.Duration(timeCLI.Interval) * time.Second)
+func timeNow(t *TimeCLI) {
+	t.validated()
+	if t.Update {
+		ticker := time.NewTicker(time.Duration(t.Interval) * time.Second)
 		for range ticker.C {
-			fmt.Print(displayTime(time.Now(), timeCLI.Format))
+			fmt.Print(displayTime(time.Now(), t.Format))
 		}
 	} else {
-		fmt.Println(displayTime(time.Now(), timeCLI.Format))
+		fmt.Println(displayTime(time.Now(), t.Format))
 	}
-
-	return nil
 }
 
-func displayTime(timeNow time.Time, format string) string {
+func displayTime(tNow time.Time, format string) string {
 	if format == "" {
-		return fmt.Sprintf(displayStyle, timeNow.String())
+		return fmt.Sprintf(displayStyle, tNow.String())
 	}
 
-	return fmt.Sprintf(displayStyle, timeNow.Format(format))
+	return fmt.Sprintf(displayStyle, tNow.Format(format))
 }

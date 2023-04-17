@@ -8,34 +8,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTimeNow(t *testing.T) {
-	testCases := map[string]struct {
-		timeCLI TimeCLI
-	}{
-		"Should return time now successfully": {
-			timeCLI: TimeCLI{
-				Format: newTimeFormat(0),
-			},
-		},
-		"Should return time now even the interval is negative or zero": {
-			timeCLI: TimeCLI{
-				Format:   newTimeFormat(1),
-				Interval: 0,
-			},
-		},
-	}
-
-	for desc, tc := range testCases {
-		tc := tc
-		t.Run(desc, func(t *testing.T) {
-			t.Parallel()
-
-			err := timeNow(&tc.timeCLI)
-			require.Nil(t, err)
-		})
-	}
-}
-
 func TestDisplayTime(t *testing.T) {
 	testTime := time.Now()
 	type testCase struct {

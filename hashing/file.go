@@ -2,34 +2,39 @@ package swisshashing
 
 import (
 	"fmt"
+	"log"
 
-	"github.com/urfave/cli/v2"
+	"github.com/spf13/cobra"
 )
 
-var HashFileCmd = &cli.Command{
-	Name:   "hash:file",
-	Usage:  "Hash a file",
-	Action: hashFileAction,
-	Flags: []cli.Flag{
-		&cli.StringFlag{
-			Name:     "path",
-			Usage:    "The path for the file (required)",
-			Aliases:  []string{"p"},
-			Required: true,
-		},
-		&cli.StringFlag{
-			Name:    "algorithm",
-			Usage:   "The algorithm for hashing",
-			Aliases: []string{"algo"},
-			Value:   string(SHA256),
-		},
-	},
+var (
+	path, algo string
+
+	HashCmd = &cobra.Command{
+		Use:   "hash",
+		Short: "Use hast tool",
+	}
+)
+
+func init() {
+	fileCmd := &cobra.Command{
+		Use:   "file",
+		Short: "Hash a file",
+		Long:  "Hash file with many algorithms like (md5, SHA256, SHA512, etc...)",
+		RunE:  hashFileAction,
+	}
+	fileCmd.Flags().StringVarP(&path, "path", "p", "", "The path for the file")
+	fileCmd.Flags().StringVarP(&algo, "algorithm", "a", "", "The algorithm for hashing")
+	if err := fileCmd.MarkFlagRequired("path"); err != nil {
+		log.Fatal(err)
+	}
+	HashCmd.AddCommand(fileCmd)
 }
 
-func hashFileAction(cliContext *cli.Context) error {
+func hashFileAction(cmd *cobra.Command, args []string) error {
 	return hashFile(&HashFile{
-		Path:      cliContext.String("path"),
-		Algorithm: AlgorithmType(cliContext.String("algorithm")),
+		Path:      path,
+		Algorithm: AlgorithmType(algo),
 	})
 }
 
