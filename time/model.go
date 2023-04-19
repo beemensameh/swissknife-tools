@@ -1,6 +1,7 @@
 package swisstime
 
 import (
+	"errors"
 	"time"
 
 	"github.com/beemensameh/swissknife-tools/internal/color"
@@ -32,11 +33,23 @@ type TimeCLI struct {
 	Format   string
 	Update   bool
 	Interval uint
+	Zone     string
+	Loc      *time.Location
 }
 
-func (timeCLI *TimeCLI) validated() {
-	if timeCLI.Interval <= 0 && timeCLI.Update {
+func (t *TimeCLI) validated() error {
+	if t.Interval <= 0 && t.Update {
 		color.PrintlnColor("Interval should be large that 0. Change interval to 1.", color.Yellow)
-		timeCLI.Interval = 1
+		t.Interval = 1
 	}
+	loc := time.Local
+	if t.Zone != "" {
+		var err error
+		loc, err = time.LoadLocation(t.Zone)
+		if err != nil {
+			return errors.New(color.SprintfColor(err.Error(), color.Red))
+		}
+	}
+	t.Loc = loc
+	return nil
 }

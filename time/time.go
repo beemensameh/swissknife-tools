@@ -12,6 +12,7 @@ const displayStyle = "\r%s"
 var (
 	format, interval uint
 	update           bool
+	zone             string
 
 	TimeCmd = &cobra.Command{
 		Use:   "time",
@@ -24,32 +25,36 @@ func init() {
 		Use:   "now",
 		Short: "Get time now",
 		Long:  "Get time now and update every i second with f format",
-		Run:   timeNowAction,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return timeNow(&TimeCLI{
+				Format:   newTimeFormat(format),
+				Update:   update,
+				Interval: interval,
+				Zone:     zone,
+			})
+		},
 	}
 	nowCmd.Flags().UintVarP(&format, "format", "f", 0, "time format (see ./docs/time.md)")
 	nowCmd.Flags().BoolVarP(&update, "update", "u", false, "refresh the time depend on interval")
 	nowCmd.Flags().UintVarP(&interval, "interval", "i", 1, "update the display time every i sec")
+	nowCmd.Flags().StringVarP(&zone, "timezone", "z", "", "timezone (format \"Continent/City\")")
 	TimeCmd.AddCommand(nowCmd)
 }
 
-func timeNowAction(cmd *cobra.Command, args []string) {
-	timeNow(&TimeCLI{
-		Format:   newTimeFormat(format),
-		Update:   update,
-		Interval: interval,
-	})
-}
+func timeNow(t *TimeCLI) error {
+	if err := t.validated(); err != nil {
+		return err
+	}
 
-func timeNow(t *TimeCLI) {
-	t.validated()
 	if t.Update {
 		ticker := time.NewTicker(time.Duration(t.Interval) * time.Second)
 		for range ticker.C {
-			fmt.Print(displayTime(time.Now(), t.Format))
+			fmt.Print(displayTime(time.Now().In(t.Loc), t.Format))
 		}
 	} else {
-		fmt.Println(displayTime(time.Now(), t.Format))
+		fmt.Print(displayTime(time.Now().In(t.Loc), t.Format))
 	}
+	return nil
 }
 
 func displayTime(tNow time.Time, format string) string {
