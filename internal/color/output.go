@@ -35,9 +35,13 @@ func (c color) format() string {
 	return fmt.Sprintf("\033[%dm", c)
 }
 
-func PrintlnColor(message string, color color) {
+func PrintlnColor(message string, c color) {
 	if !strings.HasSuffix(message, "\n") {
 		message += "\n"
 	}
-	fmt.Printf("%s%s%s", color.format(), message, reset)
+	fmt.Print(SprintfColor(message, c))
+}
+
+func SprintfColor(message string, c color) string {
+	return fmt.Sprintf("%s%s%s", c.format(), message, reset)
 }

@@ -7,74 +7,64 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/urfave/cli/v2"
+	"github.com/spf13/cobra"
 )
 
-var GenerateUUIDCmd = &cli.Command{
-	Name:    "uuid:generate",
-	Usage:   "Generate UUID for any UUID version",
-	Action:  GenerateUUIDAction,
-	Aliases: []string{"uuid:gen"},
-	Flags: []cli.Flag{
-		&cli.IntFlag{
-			Name:    "version",
-			Usage:   "The uuid version",
-			Value:   4,
-			Aliases: []string{"v"},
-		},
-		&cli.IntFlag{
-			Name:    "uuid-security-type",
-			Usage:   "It is DCE security uuid types (should be one of [0, 1, 2] and should add value when uuid version is 2)",
-			Value:   0,
-			Aliases: []string{"uid-sec-type"},
-		},
-		&cli.StringFlag{
-			Name:  "name",
-			Usage: "It is used for uuid version 3 and 5 (maybe anything - no constrained)",
-		},
-		&cli.Int64Flag{
-			Name:    "number",
-			Usage:   "Number of UUID need to generate",
-			Value:   1,
-			Aliases: []string{"n"},
-		},
-		&cli.StringFlag{
-			Name:    "separated",
-			Usage:   "The separated character that should separate UUIDs",
-			Aliases: []string{"sep"},
-		},
-	},
+var (
+	name, sep string
+	v, ust    int
+	num       int64
+
+	UUIDCmd = &cobra.Command{
+		Use:   "uuid",
+		Short: "Use uuid tool",
+	}
+)
+
+func init() {
+	generateCmd := &cobra.Command{
+		Use:   "generate",
+		Short: "Generate UUID for any UUID version",
+		Long:  "Generate UUID for any UUID version with many other configuration depend on the UUID type",
+		RunE:  generateUUIDAction,
+	}
+	generateCmd.Flags().IntVarP(&v, "version", "v", 4, "The uuid version")
+	generateCmd.Flags().IntVarP(&ust, "uuid-security-type", "u", 0, "It is DCE security uuid types (should be one of [0, 1, 2] and should add value when uuid version is 2)")
+	generateCmd.Flags().StringVarP(&name, "name", "", "", "It is used for uuid version 3 and 5 (maybe anything - no constrained)")
+	generateCmd.Flags().Int64VarP(&num, "number", "n", 1, "Number of UUID need to generate")
+	generateCmd.Flags().StringVarP(&sep, "separated", "s", "", "The separated character that should separate UUIDs")
+	UUIDCmd.AddCommand(generateCmd)
 }
 
-func GenerateUUIDAction(cliContext *cli.Context) error {
+func generateUUIDAction(cmd *cobra.Command, args []string) error {
 	return generateUUID(&UUIDCLI{
-		Version:  cliContext.Int("version"),
-		Domain:   uuid.Domain(cliContext.Int("uuid-security-type")),
-		Name:     []byte(cliContext.String("name")),
-		Number:   cliContext.Int64("number"),
-		Separate: cliContext.String("separated"),
+		Version:  v,
+		Domain:   uuid.Domain(ust),
+		Name:     []byte(name),
+		Number:   num,
+		Separate: sep,
 	})
 }
 
-func generateUUID(uuidCLI *UUIDCLI) error {
+func generateUUID(uidCLI *UUIDCLI) error {
 	var allUUIDs []string
 
-	err := uuidCLI.validated()
+	err := uidCLI.validated()
 	if err != nil {
 		return err
 	}
 
-	for range make([]int, uuidCLI.Number) {
+	for range make([]int, uidCLI.Number) {
 		uuid, err := uuidVersion(
-			uuidCLI.Version,
-			uuidCLI.Domain,
-			uuidCLI.Name,
+			uidCLI.Version,
+			uidCLI.Domain,
+			uidCLI.Name,
 		)
 		if err != nil {
 			return err
 		}
 
-		if uuidCLI.Separate == "" {
+		if uidCLI.Separate == "" {
 			fmt.Println(uuid)
 		} else {
 			allUUIDs = append(allUUIDs, uuid.String())
@@ -82,7 +72,7 @@ func generateUUID(uuidCLI *UUIDCLI) error {
 	}
 
 	if len(allUUIDs) > 0 {
-		fmt.Println(strings.Join(allUUIDs, uuidCLI.Separate))
+		fmt.Println(strings.Join(allUUIDs, uidCLI.Separate))
 	}
 
 	return nil

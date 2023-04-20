@@ -8,20 +8,42 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTimeNow(t *testing.T) {
+func TestValidated(t *testing.T) {
 	testCases := map[string]struct {
-		timeCLI TimeCLI
+		timeCLI           TimeCLI
+		isErr             bool
+		isIntervalChanged bool
 	}{
-		"Should return time now successfully": {
+		"Should success when no args passed": {
+			timeCLI: TimeCLI{},
+		},
+		"Should success when pass format": {
 			timeCLI: TimeCLI{
-				Format: newTimeFormat(0),
+				Format: newTimeFormat(1),
 			},
 		},
-		"Should return time now even the interval is negative or zero": {
+		"Should success when pass update with no interval": {
 			timeCLI: TimeCLI{
-				Format:   newTimeFormat(1),
-				Interval: 0,
+				Update: true,
 			},
+			isIntervalChanged: true,
+		},
+		"Should success when pass update with interval": {
+			timeCLI: TimeCLI{
+				Update:   true,
+				Interval: 1,
+			},
+		},
+		"Should success when pass correct timezone": {
+			timeCLI: TimeCLI{
+				Zone: "Africa/Cairo",
+			},
+		},
+		"Should fail when pass wrong timezone": {
+			timeCLI: TimeCLI{
+				Zone: "test",
+			},
+			isErr: true,
 		},
 	}
 
@@ -29,9 +51,15 @@ func TestTimeNow(t *testing.T) {
 		tc := tc
 		t.Run(desc, func(t *testing.T) {
 			t.Parallel()
-
-			err := timeNow(&tc.timeCLI)
-			require.Nil(t, err)
+			err := tc.timeCLI.validated()
+			if tc.isErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+			if tc.isIntervalChanged {
+				require.Equal(t, uint(1), tc.timeCLI.Interval)
+			}
 		})
 	}
 }
@@ -65,9 +93,7 @@ func TestDisplayTime(t *testing.T) {
 		tc := tc
 		t.Run(desc, func(t *testing.T) {
 			t.Parallel()
-
 			actualResult := displayTime(testTime, tc.timeCLI.Format)
-
 			require.Equal(t, tc.expectedResult, actualResult)
 		})
 	}
