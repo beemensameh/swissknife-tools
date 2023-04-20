@@ -1,9 +1,7 @@
 name: build
 
 on:
-    pull_request:
-        types:
-            - "opened"
+    - pull_request
 
 jobs:
     test:
