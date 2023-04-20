@@ -21,7 +21,7 @@ jobs:
             - name: release
               uses: softprops/action-gh-release@v1
               with:
-                  files: ./bin/swisstool
+                  files: ./bin/swisstools
               env:
                   GITHUB_TOKEN: ${{ secrets.TOKEN }}
     linux64:
@@ -39,7 +39,7 @@ jobs:
             - name: release
               uses: softprops/action-gh-release@v1
               with:
-                  files: ./bin/swisstool-amd64
+                  files: ./bin/swisstools-amd64
               env:
                   GITHUB_TOKEN: ${{ secrets.TOKEN }}
     win32:
@@ -57,7 +57,7 @@ jobs:
             - name: release
               uses: softprops/action-gh-release@v1
               with:
-                  files: ./bin/swisstool-i386.exe
+                  files: ./bin/swisstools-i386.exe
               env:
                   GITHUB_TOKEN: ${{ secrets.TOKEN }}
     win64:
@@ -75,7 +75,7 @@ jobs:
             - name: release
               uses: softprops/action-gh-release@v1
               with:
-                  files: ./bin/swisstool-x64.exe
+                  files: ./bin/swisstools-x64.exe
               env:
                   GITHUB_TOKEN: ${{ secrets.TOKEN }}
     macos:
@@ -93,6 +93,6 @@ jobs:
             - name: release
               uses: softprops/action-gh-release@v1
               with:
-                  files: ./bin/swisstool-darwin-amd64
+                  files: ./bin/swisstools-darwin-amd64
               env:
                   GITHUB_TOKEN: ${{ secrets.TOKEN }}
