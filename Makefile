@@ -2,7 +2,11 @@ VERSION := $(shell git rev-parse --abbrev-ref HEAD)
 
 all:build
 
-build:build-linux32 build-linux64 build-win32 build-win64 build-mac
+build:build-linux build-win build-mac
+
+build-linux:build-linux32 build-linux64
+
+build-win:build-win32 build-win64
 
 test:
 	go test ./... -timeout 30s

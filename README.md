@@ -46,20 +46,20 @@ A quick and amazing tools for speed up your work
     ```sh
     swisstools.exe
     ```
-- **[Optional]** for using auto-complete commands for swissknife-tool:
+- **[Optional]** for using auto-complete commands for swissknife-tools:<br>
     If it is not installed already, you can install it via your OS's package manager.
     To load completions in your current shell session:
     ```sh
-    source <(swisstool completion bash)
+    source <(swisstools completion bash)
     ```
     To load completions for every new session, execute once:
     #### Linux:
     ```sh
-    swisstools completion bash > /etc/bash_completion.d/swisstool
+    swisstools completion bash > /etc/bash_completion.d/swisstools
     ```
     #### macOS:
     ```sh
-    swisstools completion bash > $(brew --prefix)/etc/bash_completion.d/swisstool
+    swisstools completion bash > $(brew --prefix)/etc/bash_completion.d/swisstools
     ```
     You will need to start a new shell for this setup to take effect.
 
