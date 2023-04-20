@@ -5,7 +5,7 @@ A quick and amazing tools for speed up your work
 
 ## Badges
 
-[![Release](https://github.com/beemensameh/swissknife-tools/actions/workflows/github-workflow.yml/badge.svg)](https://github.com/beemensameh/swissknife-tools/actions/workflows/github-workflow.yml)
+[![Release](https://github.com/beemensameh/swissknife-tools/actions/workflows/release.yml/badge.svg)](https://github.com/beemensameh/swissknife-tools/actions/workflows/release.yml)
 [![Build](https://github.com/beemensameh/swissknife-tools/actions/workflows/go-ci.yml/badge.svg)](https://github.com/beemensameh/swissknife-tools/actions/workflows/go-ci.yml)
 
 [![Go Version](https://img.shields.io/github/go-mod/go-version/beemensameh/swissknife-tools?logo=go)](https://go.dev/)
