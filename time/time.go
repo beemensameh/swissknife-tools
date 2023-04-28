@@ -49,10 +49,10 @@ func timeNow(t *TimeCLI) error {
 	if t.Update {
 		ticker := time.NewTicker(time.Duration(t.Interval) * time.Second)
 		for range ticker.C {
-			fmt.Print(displayTime(time.Now().In(t.Loc), t.Format))
+			fmt.Println(displayTime(time.Now().In(t.Loc), t.Format))
 		}
 	} else {
-		fmt.Print(displayTime(time.Now().In(t.Loc), t.Format))
+		fmt.Println(displayTime(time.Now().In(t.Loc), t.Format))
 	}
 	return nil
 }
