@@ -18,8 +18,8 @@ type JSONValidation struct {
 }
 
 func (j *JSONValidation) validated() error {
-	if !validate.IsFile(j.Input) {
-		return errors.New(color.SprintfColor("Should enter a valid input file path", color.Red))
+	if err := validate.FileOrDirValidation(j.Input, false); err != nil {
+		return err
 	}
 
 	file, err := os.ReadFile(j.Input)

@@ -11,6 +11,7 @@ import (
 	"os"
 
 	"github.com/beemensameh/swissknife-tools/internal/color"
+	"github.com/beemensameh/swissknife-tools/internal/validate"
 )
 
 type AlgorithmType string
@@ -32,12 +33,8 @@ type HashFile struct {
 }
 
 func (hf *HashFile) Validated() error {
-	if f, err := os.Stat(hf.Path); err != nil {
-		return errors.New(color.SprintfColor("Should pass a valid path file", color.Red))
-	} else {
-		if f.IsDir() {
-			return errors.New(color.SprintfColor("Should pass a file not a directory", color.Red))
-		}
+	if err := validate.FileOrDirValidation(hf.Path, false); err != nil {
+		return err
 	}
 
 	c, err := os.ReadFile(hf.Path)
