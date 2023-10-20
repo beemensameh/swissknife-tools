@@ -1,4 +1,4 @@
-name: test
+name: build
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ on:
       - "main"
 
 env:
-  GO_VERSION: 1.21.3
+  GO_VERSION: '1.21.3'
   ACTION_CHECKOUT: actions/checkout@v4
   ACTION_GO_SETUP: actions/setup-go@v4
 
