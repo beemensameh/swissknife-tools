@@ -11,8 +11,6 @@ on:
 
 env:
   GO_VERSION: '1.21.3'
-  ACTION_CHECKOUT: actions/checkout@v4
-  ACTION_GO_SETUP: actions/setup-go@v4
 
 jobs:
   test:
@@ -21,9 +19,9 @@ jobs:
     env:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
-      - uses: ${{ ACTION_CHECKOUT }}
+      - uses: actions/checkout@v4
       - name: Set up Go
-        uses: ${{ ACTION_GO_SETUP }}
+        uses: actions/setup-go@v4
         with:
           go-version: ${{ GO_VERSION }}
       - name: Run golangci-lint
@@ -41,9 +39,9 @@ jobs:
     name: Check build linux-386 binary
     runs-on: ubuntu-latest
     steps:
-      - uses: ${{ ACTION_CHECKOUT }}
+      - uses: actions/checkout@v4
       - name: Set up Go
-        uses: ${{ ACTION_GO_SETUP }}
+        uses: actions/setup-go@v4
         with:
           go-version: ${{ GO_VERSION }}
       - name: Check build
@@ -52,9 +50,9 @@ jobs:
     name: Check build linux-amd64 binary
     runs-on: ubuntu-latest
     steps:
-      - uses: ${{ ACTION_CHECKOUT }}
+      - uses: actions/checkout@v4
       - name: Set up Go
-        uses: ${{ ACTION_GO_SETUP }}
+        uses: actions/setup-go@v4
         with:
           go-version: ${{ GO_VERSION }}
       - name: Check build
@@ -63,9 +61,9 @@ jobs:
     name: Check build win32 binary
     runs-on: ubuntu-latest
     steps:
-      - uses: ${{ ACTION_CHECKOUT }}
+      - uses: actions/checkout@v4
       - name: Set up Go
-        uses: ${{ ACTION_GO_SETUP }}
+        uses: actions/setup-go@v4
         with:
           go-version: ${{ GO_VERSION }}
       - name: Check build
@@ -74,9 +72,9 @@ jobs:
     name: Check build win64 binary
     runs-on: ubuntu-latest
     steps:
-      - uses: ${{ ACTION_CHECKOUT }}
+      - uses: actions/checkout@v4
       - name: Set up Go
-        uses: ${{ ACTION_GO_SETUP }}
+        uses: actions/setup-go@v4
         with:
           go-version: ${{ GO_VERSION }}
       - name: Check build
@@ -85,9 +83,9 @@ jobs:
     name: Check build macos binary
     runs-on: ubuntu-latest
     steps:
-      - uses: ${{ ACTION_CHECKOUT }}
+      - uses: actions/checkout@v4
       - name: Set up Go
-        uses: ${{ ACTION_GO_SETUP }}
+        uses: actions/setup-go@v4
         with:
           go-version: ${{ GO_VERSION }}
       - name: Check build
