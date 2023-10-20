@@ -9,6 +9,7 @@ A quick and amazing tools for speed up your work
 [![Build](https://github.com/beemensameh/swissknife-tools/actions/workflows/go-ci.yml/badge.svg)](https://github.com/beemensameh/swissknife-tools/actions/workflows/go-ci.yml)
 
 [![Go Version](https://img.shields.io/github/go-mod/go-version/beemensameh/swissknife-tools?logo=go)](https://go.dev/)
+[![Go Reference](https://pkg.go.dev/badge/github.com/beemensameh/swissknife-tools.svg)](https://pkg.go.dev/github.com/beemensameh/swissknife-tools)
 [![Go Report Card](https://goreportcard.com/badge/github.com/beemensameh/swissknife-tools)](https://goreportcard.com/report/github.com/beemensameh/swissknife-tools)
 [![codecov](https://codecov.io/gh/beemensameh/swissknife-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/vektra/mockery)
 
