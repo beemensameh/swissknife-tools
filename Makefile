@@ -1,12 +1,20 @@
 VERSION := $(shell git rev-parse --abbrev-ref HEAD)
+OS = $(shell go env GOOS)
+ARCH = $(shell go env GOARCH)
 
-all:build
+ifneq ($(OS), windows)
+	ifeq ($(ARCH), amd64)
+		RACE = -race
+	endif
+endif
 
-build:build-linux build-win build-mac
-
+all:build-linux build-win build-mac
 build-linux:build-linux32 build-linux64
-
 build-win:build-win32 build-win64
+build-mac:build-mac-amd build-mac-arm
+
+build:
+	GOOS=$(OS) GOARCH=$(ARCH) go build -ldflags "-s -X main.name=swisstools-$(ARCH) -X main.version=$(VERSION)" -mod=vendor -o=./bin/swisstools-$(ARCH) $(RACE) ./cmd/swissknife-tools/.
 
 test:
 	go test ./... -timeout 30s
@@ -29,10 +37,13 @@ build-win32:
 build-win64:
 	GOOS=windows GOARCH=amd64 go build -ldflags "-s -X main.name=swisstools-x64.exe -X main.version=$(VERSION)" -mod=vendor -o=./bin/swisstools-x64.exe ./cmd/swissknife-tools/.
 
-build-mac:
-	GOOS=darwin GOARCH=amd64 go build -ldflags "-s -X main.name=swisstools-darwin-amd64 -X main.version=$(VERSION)" -mod=vendor -o=./bin/swisstools-darwin-amd64 ./cmd/swissknife-tools/.
+build-mac-amd:
+	GOOS=darwin GOARCH=amd64 go build -ldflags "-s -X main.name=swisstools-darwin-amd64 -X main.version=$(VERSION)" -mod=vendor -o=./bin/swisstools-darwin-amd64 -race ./cmd/swissknife-tools/.
 
-tidy:
+build-mac-arm:
+	GOOS=darwin GOARCH=arm64 go build -ldflags "-s -X main.name=swisstools-darwin-arm64 -X main.version=$(VERSION)" -mod=vendor -o=./bin/swisstools-darwin-arm64 ./cmd/swissknife-tools/.
+
+vendor:
 	go mod tidy && go mod vendor
 
 vulncheck:
