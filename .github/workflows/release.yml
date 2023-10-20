@@ -5,6 +5,9 @@ on:
     tags:
       - "*"
 
+env:
+  GO_VERSION: '1.21.3'
+
 jobs:
   linux32:
     name: build linux-386 binary
@@ -15,7 +18,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.3
+          go-version: ${{ env.GO_VERSION }}
       - name: build
         run: make tidy && make build-linux32 VERSION=$GITHUB_REF_NAME
       - name: release
@@ -33,7 +36,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.3
+          go-version: ${{ env.GO_VERSION }}
       - name: build
         run: make tidy && make build-linux64 VERSION=$GITHUB_REF_NAME
       - name: release
@@ -51,7 +54,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.3
+          go-version: ${{ env.GO_VERSION }}
       - name: build
         run: make tidy && make build-win32 VERSION=$GITHUB_REF_NAME
       - name: release
@@ -69,7 +72,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.3
+          go-version: ${{ env.GO_VERSION }}
       - name: build
         run: make tidy && make build-win64 VERSION=$GITHUB_REF_NAME
       - name: release
@@ -78,7 +81,7 @@ jobs:
           files: ./bin/swisstools-x64.exe
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-  macos:
+  macos-amd:
     name: build macos binary
     runs-on: ubuntu-latest
     steps:
@@ -87,12 +90,30 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.3
+          go-version: ${{ env.GO_VERSION }}
       - name: build
-        run: make tidy && make build-mac VERSION=$GITHUB_REF_NAME
+        run: make tidy && make build-mac-amd VERSION=$GITHUB_REF_NAME
       - name: release
         uses: softprops/action-gh-release@v1
         with:
           files: ./bin/swisstools-darwin-amd64
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+  macos-arm:
+    name: build macos binary
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: build
+        run: make tidy && make build-mac-arm VERSION=$GITHUB_REF_NAME
+      - name: release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./bin/swisstools-darwin-arm64
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
