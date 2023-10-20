@@ -2,6 +2,8 @@ name: build
 
 on:
   pull_request:
+    types:
+      - opened
   push:
     branches:
       - "development"
@@ -21,7 +23,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ GO_VERSION }}
+          go-version: ${{ env.GO_VERSION }}
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v3
       - name: test
@@ -41,7 +43,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ GO_VERSION }}
+          go-version: ${{ env.GO_VERSION }}
       - name: Check build
         run: make build-linux32 VERSION=$GITHUB_REF_NAME
   linux64:
@@ -52,7 +54,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ GO_VERSION }}
+          go-version: ${{ env.GO_VERSION }}
       - name: Check build
         run: make build-linux64 VERSION=$GITHUB_REF_NAME
   win32:
@@ -63,7 +65,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ GO_VERSION }}
+          go-version: ${{ env.GO_VERSION }}
       - name: Check build
         run: make build-win32 VERSION=$GITHUB_REF_NAME
   win64:
@@ -74,7 +76,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ GO_VERSION }}
+          go-version: ${{ env.GO_VERSION }}
       - name: Check build
         run: make build-win64 VERSION=$GITHUB_REF_NAME
   macos:
@@ -85,6 +87,6 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ GO_VERSION }}
+          go-version: ${{ env.GO_VERSION }}
       - name: Check build
         run: make build-mac VERSION=$GITHUB_REF_NAME
