@@ -43,7 +43,7 @@ build-mac-amd:
 build-mac-arm:
 	GOOS=darwin GOARCH=arm64 go build -ldflags "-s -X main.name=swisstools-darwin-arm64 -X main.version=$(VERSION)" -mod=vendor -o=./bin/swisstools-darwin-arm64 ./cmd/swissknife-tools/.
 
-tidy:
+vendor:
 	go mod tidy && go mod vendor
 
 vulncheck:
