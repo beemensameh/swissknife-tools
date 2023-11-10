@@ -46,6 +46,9 @@ build-mac-arm:
 vendor:
 	go mod tidy && go mod vendor
 
+vulncheck-install:
+	go install golang.org/x/vuln/cmd/govulncheck@latest
+
 vulncheck:
 	govulncheck ./...
 
