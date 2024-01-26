@@ -1,5 +1,6 @@
 coverage.*
 
+gc/
 bin/
 .vscode/
 vendor/
